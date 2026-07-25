@@ -60,5 +60,10 @@ Haz backup de ese archivo si quieres conservar histórico.
 Configuracion incluida para produccion:
 
 - Start command: `npm start`
-- Persistencia de agenda en disco: `DATA_FILE=/data/agenda.json`
-- Disco persistente: `/data` (1 GB)
+
+Nota sobre Render Free:
+
+- El plan free no permite disco persistente.
+- La agenda se guarda en almacenamiento temporal del servicio.
+- Si el servicio se reinicia/redeploya, los cambios pueden reiniciarse.
+- Para persistencia real, usa un plan con disco o conecta una base de datos.
