@@ -48,3 +48,17 @@ La agenda se guarda en:
 - `agenda.json`
 
 Haz backup de ese archivo si quieres conservar histórico.
+
+## Publicar para que todos lo vean (Render)
+
+1. En Render crea un `Web Service` conectando este repo de GitHub.
+2. Render detectara `render.yaml` automaticamente.
+3. En `Environment` define una clave segura en:
+	- `AGENDA_ADMIN_PASSWORD`
+4. Despliega y abre la URL publica que te entrega Render.
+
+Configuracion incluida para produccion:
+
+- Start command: `npm start`
+- Persistencia de agenda en disco: `DATA_FILE=/data/agenda.json`
+- Disco persistente: `/data` (1 GB)

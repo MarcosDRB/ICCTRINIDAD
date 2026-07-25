@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = process.env.AGENDA_ADMIN_PASSWORD || 'TRINIDAD2026';
-const DATA_FILE = path.join(__dirname, 'agenda.json');
+const DATA_FILE = process.env.DATA_FILE || path.join(__dirname, 'agenda.json');
 
 const defaultEvents = [
     { id: crypto.randomUUID(), title: 'Servicio Dominical', date: '2026-07-26T10:00:00', place: 'Sede Principal' },
@@ -19,6 +19,8 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 function ensureDataFile() {
+    fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
+
     if (!fs.existsSync(DATA_FILE)) {
         fs.writeFileSync(DATA_FILE, JSON.stringify({ events: defaultEvents }, null, 2), 'utf8');
         return;

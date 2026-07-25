@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: icctrinidad
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: AGENDA_ADMIN_PASSWORD
+        sync: false
+      - key: DATA_FILE
+        value: /data/agenda.json
+    disk:
+      name: agenda-data
+      mountPath: /data
+      sizeGB: 1
