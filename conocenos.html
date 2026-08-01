@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
 
 <head>
@@ -7,7 +7,7 @@
     <title>Conócenos — ICC La Trinidad</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css" />
-    <link rel="icon" href="https://icclatrinidad.com/imagenes/logo2.png" />
+    <link rel="icon" href="media/logo-favicon.png" />
     <style>
         :root {
             --brand-navy: #0b2340;
@@ -18,11 +18,11 @@
 
 <body class="antialiased text-gray-800">
     <!-- header (same as index) -->
-    <header class="brand-bg text-white">
-        <div class="max-w-6xl mx-auto flex items-center justify-between p-4">
-            <a href="index.html" class="flex items-center gap-3">
-                <img src="https://icclatrinidad.com/imagenes/logo2.png" alt="Logo"
-                    class="h-12 w-12 object-contain rounded" />
+    <header class="brand-bg text-white home-topbar">
+        <div class="max-w-6xl mx-auto flex items-center justify-between p-4 home-topbar-inner">
+            <a href="index.html" class="flex items-center gap-3 home-brand-link">
+                <img src="media/logo-navbar.png" alt="Logo"
+                    class="h-16 w-16 object-contain rounded" />
                 <div>
                     <h1 class="text-xl font-semibold">Iglesia Comunidad Cristiana La Trinidad</h1>
                 </div>
@@ -32,13 +32,14 @@
                     <li><a class="hover:underline" href="index.html">Inicio</a></li>
                     <li><a class="hover:underline" href="conocenos.html">Conócenos</a></li>
                     <li><a class="hover:underline" href="eventos.html">Eventos</a></li>
-                    <li><a class="hover:underline" href="predicas.html">Predicas</a></li>
+                    <li><a class="hover:underline" href="predicas.html">Prédicas</a></li>
                     <li><a class="hover:underline" href="liderazgo.html">Liderazgo</a></li>
                     <li><a class="hover:underline" href="grupos.html">Grupos</a></li>
                     <li><a class="hover:underline" href="testimonios.html">Testimonios</a></li>
                     <li><a class="hover:underline" href="diezmos.html">Diezmos</a></li>
                 </ul>
             </nav>
+            <button id="menuBtn" class="md:hidden p-2 border rounded">Menú</button>
         </div>
     </header>
 
@@ -63,9 +64,12 @@
             </ul>
         </section>
 
-        <section class="mt-6 card reveal">
-            <h3 class="text-xl font-semibold section-title">Conoce a nuestros líderes</h3>
-            <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <section class="mt-6 leaders-section reveal">
+            <div class="leaders-header">
+                <h3 class="text-xl font-semibold section-title">Conoce a nuestros líderes</h3>
+                <p class="text-sm text-muted">Haz clic sobre cada imagen para ver más información.</p>
+            </div>
+            <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 leaders-grid">
                 <button class="leader-card" data-name="Pastor Jhon" data-role="Pastor Principal"
                     data-bio="Apasionado por enseñar y pastorear la iglesia."><img class="person-photo rounded"
                         src="https://icclatrinidad.com/imagenes/IMG_0197.jpg" alt="Pastor Jhon" />
@@ -240,3 +244,6 @@
 </body>
 
 </html>
+
+
+

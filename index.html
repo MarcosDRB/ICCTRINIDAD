@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
 
 <head>
@@ -8,7 +8,7 @@
     <meta name="description"
         content="Iglesia Comunidad Cristiana La Trinidad — sitio renovado, profesional y responsive" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" href="https://icclatrinidad.com/imagenes/logo2.png" />
+    <link rel="icon" href="media/logo-favicon.png" />
     <style>
         /* Palette: navy + gold accents */
         :root {
@@ -27,12 +27,11 @@
     <link rel="stylesheet" href="styles.css" />
 </head>
 
-<body class="antialiased text-gray-800">
-    <header class="brand-bg text-white">
-        <div class="max-w-6xl mx-auto flex items-center justify-between p-4">
-            <a href="#" class="flex items-center gap-3">
-                <img src="https://icclatrinidad.com/imagenes/logo2.png" alt="Logo ICC La Trinidad"
-                    class="h-12 w-12 object-contain rounded" />
+<body class="antialiased text-gray-800 home-bethel">
+    <header class="brand-bg text-white home-topbar">
+        <div class="max-w-6xl mx-auto flex items-center justify-between p-4 home-topbar-inner">
+            <a href="index.html" class="flex items-center gap-3 home-brand-link" aria-label="Inicio ICC La Trinidad">
+                <img src="media/logo-navbar.png" alt="Logo ICC La Trinidad" class="h-14 w-14 object-contain rounded" />
                 <div>
                     <h1 class="text-xl font-semibold">Iglesia Comunidad Cristiana La Trinidad</h1>
                     <p class="text-sm opacity-75">Adorar · Crecer · Servir</p>
@@ -43,11 +42,20 @@
                     <li><a class="nav-link hover:underline" href="index.html">Inicio</a></li>
                     <li><a class="nav-link hover:underline" href="conocenos.html">Conócenos</a></li>
                     <li><a class="nav-link hover:underline" href="eventos.html">Eventos</a></li>
-                    <li><a class="nav-link hover:underline" href="predicas.html">Predicas</a></li>
+                    <li><a class="nav-link hover:underline" href="predicas.html">Prédicas</a></li>
                     <li><a class="nav-link hover:underline" href="liderazgo.html">Liderazgo</a></li>
                     <li><a class="nav-link hover:underline" href="grupos.html">Grupos</a></li>
                     <li><a class="nav-link hover:underline" href="testimonios.html">Testimonios</a></li>
                     <li><a class="nav-link hover:underline" href="diezmos.html">Diezmos</a></li>
+                    <li>
+                        <button class="home-search-btn" type="button" aria-label="Buscar">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="11" cy="11" r="7"></circle>
+                                <path d="M20 20l-3.5-3.5"></path>
+                            </svg>
+                        </button>
+                    </li>
                 </ul>
                 <button id="menuBtn" class="md:hidden p-2 border rounded">Menú</button>
             </nav>
@@ -56,83 +64,142 @@
 
     <main class="home-main-wide">
         <!-- Hero -->
-        <section class="mt-4 px-3 md:px-5">
-            <div class="relative rounded overflow-hidden shadow-lg home-hero-shell">
-                <video class="w-full home-hero-video" autoplay muted loop playsinline preload="metadata"
-                    poster="https://icclatrinidad.com/imagenes/PORTADA%20FACEBOOK%20LA%20TRINIDAD.svg"
-                    aria-label="Video de portada Iglesia Comunidad Cristiana La Trinidad">
-                    <source src="media/inicio-hero-2560x1440.mp4" type="video/mp4" />
-                </video>
-                <div class="absolute inset-0 bg-black/35 flex items-center hero-overlay">
-                    <div class="px-6 md:px-12 hero-content reveal">
-                        <h2 class="text-3xl md:text-5xl text-white font-bold">Bienvenido a nuestra comunidad</h2>
-                        <p class="text-white/90 mt-2 max-w-2xl">Un lugar para adorar, crecer y servir juntos — únete a
+        <section class="mt-0 px-0">
+            <div class="home-hero-stage">
+                <div class="home-hero-stage-overlay"></div>
+                <div class="relative rounded overflow-hidden shadow-lg home-hero-shell">
+                    <video class="w-full home-hero-video" autoplay muted loop playsinline preload="metadata"
+                        poster="https://icclatrinidad.com/imagenes/PORTADA%20FACEBOOK%20LA%20TRINIDAD.svg"
+                        aria-label="Video de portada Iglesia Comunidad Cristiana La Trinidad">
+                        <source src="media/inicio-hero-2560x1440.mp4" type="video/mp4" />
+                    </video>
+                </div>
+                <div class="home-hero-text-layer absolute inset-0 flex items-center">
+                    <div class="px-6 md:px-12 hero-content reveal home-hero-copy">
+                        <p class="home-hero-kicker">Un lugar para adorar, crecer y servir juntos</p>
+                        <h2 class="home-hero-title text-white">Bienvenido a nuestra comunidad</h2>
+                        <p class="text-white/90 mt-2 max-w-2xl">Únete a
                             nuestros servicios y actividades.</p>
-                        <div class="mt-4">
+                        <div class="mt-6 home-hero-actions">
                             <a href="#contacto" aria-label="Contáctanos" title="Contáctanos"
-                                class="inline-block btn-primary btn-cta text-sm px-4 py-2 rounded font-semibold">Contáctanos</a>
+                                class="inline-block home-hero-btn home-hero-btn-primary">Contáctanos <span
+                                    aria-hidden="true">→</span></a>
                             <a href="eventos.html" aria-label="Próximos eventos" title="Próximos eventos"
-                                class="ml-3 inline-block btn-secondary text-white px-4 py-2 rounded">Próximos
-                                eventos</a>
+                                class="inline-block home-hero-btn home-hero-btn-secondary">Próximos eventos <span
+                                    aria-hidden="true">→</span></a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Conócenos -->
-        <section id="conocenos" class="mt-12 p-6 bg-white rounded shadow">
-            <h3 class="text-2xl font-semibold brand-accent">Quiénes somos</h3>
-            <p class="mt-3">Somos la Iglesia Comunidad Cristiana La Trinidad, dedicada a adorar, servir y crecer juntos
-                en la fe. Nuestra misión: llevar el evangelio, discipular y equipar a creyentes para servir con amor.
-            </p>
+        <!-- Quiénes somos (estructura PDF) -->
+        <section id="conocenos" class="home-pdf-section home-pdf-about reveal">
+            <h3 class="home-pdf-title">Una iglesia donde Cristo transforma vidas y forma discípulos</h3>
+            <p class="home-pdf-lead">En <strong>ICC La Trinidad</strong> creemos que cada persona tiene un propósito
+                eterno. Somos una familia de fe apasionada por Dios, comprometida con anunciar el Evangelio, restaurar
+                familias y formar discípulos que reflejen el carácter de Cristo en cada área de su vida.</p>
 
-            <div class="grid md:grid-cols-3 gap-6 mt-6">
-                <div class="p-4 border rounded">
-                    <h4 class="font-semibold">Misión</h4>
-                    <p class="mt-2 text-sm">Llevar el evangelio de Jesucristo a todas las personas, discipulando y
-                        equipando a los creyentes para servir con amor.</p>
-                </div>
-                <div class="p-4 border rounded">
-                    <h4 class="font-semibold">Visión</h4>
-                    <p class="mt-2 text-sm">Ser una iglesia que impacte la sociedad a través de la enseñanza bíblica, la
-                        adoración genuina y el servicio comprometido.</p>
-                </div>
-                <div class="p-4 border rounded">
-                    <h4 class="font-semibold">Valores</h4>
-                    <ul class="mt-2 text-sm list-disc list-inside">
-                        <li>Integridad</li>
-                        <li>Servicio</li>
-                        <li>Comunidad</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contacto rápido -->
-        <section id="contacto" class="mt-8 p-6 bg-white rounded shadow reveal">
-            <h3 class="text-2xl font-semibold brand-accent">Contacto</h3>
-            <p class="mt-2 text-sm text-muted">¿Tienes preguntas o quieres visitar? Escríbenos o pasa por la iglesia.
-            </p>
-            <div class="mt-4 grid md:grid-cols-2 gap-6 items-start">
-                <form class="p-4 bg-gray-50 rounded shadow">
-                    <label class="block text-sm">Nombre</label>
-                    <input class="mt-2 w-full p-2" type="text" placeholder="Tu nombre" />
-                    <label class="block text-sm mt-3">Mensaje</label>
-                    <textarea class="mt-2 w-full p-2" rows="4" placeholder="Escribe tu mensaje"></textarea>
-                    <div class="mt-3"><button class="btn-primary">Enviar</button></div>
-                </form>
-                <div class="p-4">
-                    <h4 class="font-semibold">Visítanos</h4>
-                    <p class="mt-2 text-sm">CLL 81 # 18D-21, 2do Piso, Los Almendros</p>
-                    <div class="mt-4 bg-gray-100 rounded overflow-hidden"
-                        style="height:220px;display:flex;align-items:center;justify-content:center">Mapa (placeholder)
+            <div class="home-pdf-about-grid">
+                <img src="media/IMAGENES QUE DEBES UTILIZAR SEGUN LA ESTRUCTURA DADA EN EL PDF/IMAGEN1.jpeg"
+                    alt="Oración y acompañamiento en ICC La Trinidad" class="home-pdf-about-image" />
+                <div class="home-pdf-about-copy">
+                    <p>En nuestra iglesia creemos en el poder transformador del Espíritu Santo, en la enseñanza fiel de
+                        la Palabra y en una comunidad que ama, sirve y discípula. Nuestro deseo es que cada persona
+                        experimente el amor de Dios, encuentre esperanza y sea equipada para impactar su familia, su
+                        ciudad y las naciones.</p>
+                    <p class="home-pdf-strong">Aquí siempre habrá un lugar para ti.</p>
+                    <div class="home-pdf-actions">
+                        <a href="conocenos.html"
+                            class="home-hero-btn home-hero-btn-primary home-pdf-action-btn">CONOCENOS <span
+                                aria-hidden="true">→</span></a>
+                        <a href="eventos.html"
+                            class="home-hero-btn home-hero-btn-secondary home-pdf-action-btn">PRÓXIMOS EVENTOS <span
+                                aria-hidden="true">→</span></a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Homepage trimmed: only Hero and Quiénes somos remain -->
+        <!-- Ministerios -->
+        <section class="home-pdf-section home-pdf-ministries reveal">
+            <h3 class="home-pdf-eyebrow">MINISTERIOS</h3>
+            <h4 class="home-pdf-subtitle">El avivamiento se construye cuando cada creyente encuentra su lugar.</h4>
+            <p class="home-pdf-text">En ICC La Trinidad creemos que Dios equipa a cada hijo con dones y talentos para
+                edificar Su Iglesia. Ya sea adorando, enseñando, sirviendo, recibiendo personas o acompañando familias,
+                hay un ministerio donde puedes crecer y cumplir el propósito que Dios tiene para ti.</p>
+
+            <div class="home-pdf-ministries-layout">
+                <div class="home-pdf-ministry-cta">
+                    <a href="grupos.html" class="home-hero-btn home-hero-btn-primary home-pdf-action-btn">Únete a un
+                        ministerio <span aria-hidden="true">→</span></a>
+                </div>
+                <div class="home-pdf-collage" aria-label="Galería de ministerios ICC La Trinidad">
+                    <img src="media/IMAGENES QUE DEBES UTILIZAR SEGUN LA ESTRUCTURA DADA EN EL PDF/IMAGEN2.jpeg"
+                        alt="Equipo de ministerio ICC" class="home-pdf-collage-a" />
+                    <img src="media/IMAGENES QUE DEBES UTILIZAR SEGUN LA ESTRUCTURA DADA EN EL PDF/IMAGEN3.jpeg"
+                        alt="Servicio de ministerio ICC" class="home-pdf-collage-b" />
+                </div>
+            </div>
+        </section>
+
+        <!-- Eventos -->
+        <section class="home-pdf-section home-pdf-events reveal">
+            <h3 class="home-pdf-eyebrow">EVENTOS</h3>
+            <h4 class="home-pdf-subtitle">Vive cada momento que Dios tiene preparado para ti.</h4>
+            <p class="home-pdf-text">Conferencias, congresos, encuentros, capacitaciones y actividades para toda la
+                familia. Cada evento es una oportunidad para crecer en la fe, fortalecer relaciones y experimentar la
+                presencia de Dios.</p>
+
+            <div class="home-pdf-event-card">
+                <img src="media/IMAGENES QUE DEBES UTILIZAR SEGUN LA ESTRUCTURA DADA EN EL PDF/IMAGEN4.png"
+                    alt="Próximo evento Congreso de Parejas 2026" class="home-pdf-event-image" />
+                <div>
+                    <div class="home-pdf-event-kicker">Próximo evento</div>
+                    <h5>Congreso de Parejas 2026</h5>
+                    <p>"Fortaleciendo matrimonios conforme al corazón de Dios."</p>
+                    <div class="home-pdf-event-date">16 de agosto de 2026 · 6:00 p. m.</div>
+                    <a href="eventos.html" class="home-hero-btn home-hero-btn-primary home-pdf-action-btn">Ver evento
+                        <span aria-hidden="true">→</span></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ubicación -->
+        <section id="ubicacion" class="home-pdf-section home-pdf-location reveal">
+            <div class="home-pdf-location-copy">
+                <h3 class="home-pdf-eyebrow">UBICACIÓN</h3>
+                <h4 class="home-pdf-subtitle">Un lugar donde puedes encontrarte con Dios y con una familia.</h4>
+                <p class="home-pdf-text">Cada reunión es una oportunidad para experimentar la presencia de Dios, recibir
+                    una palabra que fortalezca tu vida y conectar con personas que caminarán contigo en la fe.</p>
+                <div class="home-pdf-address">📍 CLL 81 # 18D-21, 2do Piso, Los Almendros |
+                    comunicaciones.icclatrinidad@gmail.com</div>
+                <a href="https://www.google.com/maps/search/?api=1&query=CLL+81+%2318D-21+2do+Piso+Los+Almendros"
+                    target="_blank" rel="noopener noreferrer"
+                    class="home-hero-btn home-hero-btn-primary home-pdf-action-btn">Ver ubicación <span
+                        aria-hidden="true">→</span></a>
+            </div>
+            <img src="media/IMAGENES QUE DEBES UTILIZAR SEGUN LA ESTRUCTURA DADA EN EL PDF/IMAGEN5.jpeg"
+                alt="Templo ICC La Trinidad" class="home-pdf-location-image" />
+        </section>
+
+        <!-- Contacto final -->
+        <section id="contacto" class="home-pdf-section home-pdf-contact reveal">
+            <h3 class="text-2xl font-semibold brand-accent">Contacto</h3>
+            <p class="mt-2 text-sm text-muted">¿Tienes preguntas o quieres visitar? Escríbenos o pasa por la iglesia.
+            </p>
+            <div class="home-pdf-contact-grid">
+                <form class="home-pdf-contact-form" onsubmit="return false;">
+                    <label class="block text-sm">Nombre</label>
+                    <input class="mt-2 w-full p-2" type="text" placeholder="Tu nombre" />
+                    <label class="block text-sm mt-3">Mensaje</label>
+                    <textarea class="mt-2 w-full p-2" rows="5" placeholder="Escribe tu mensaje"></textarea>
+                    <div class="mt-3"><button class="btn-primary" type="submit">Enviar</button></div>
+                </form>
+                <div class="home-pdf-contact-map"
+                    style="height:270px;display:flex;align-items:center;justify-content:center">Mapa (placeholder)</div>
+            </div>
+        </section>
     </main>
 
     <footer class="site-footer">

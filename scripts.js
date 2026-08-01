@@ -77,14 +77,28 @@ document.addEventListener('DOMContentLoaded', function () {
     // Simple mobile menu toggle (guarded)
     const menuBtn = document.getElementById('menuBtn');
     if (menuBtn) {
+        menuBtn.setAttribute('aria-expanded', 'false');
         menuBtn.addEventListener('click', () => {
             const nav = document.querySelector('header nav ul');
             if (!nav) return;
-            if (nav.classList.contains('hidden')) {
+            nav.classList.toggle('mobile-open');
+            if (nav.classList.contains('mobile-open')) {
                 nav.classList.remove('hidden');
+                menuBtn.setAttribute('aria-expanded', 'true');
             } else {
                 nav.classList.add('hidden');
+                menuBtn.setAttribute('aria-expanded', 'false');
             }
+        });
+
+        document.querySelectorAll('header nav ul a').forEach(link => {
+            link.addEventListener('click', () => {
+                const nav = document.querySelector('header nav ul');
+                if (!nav) return;
+                nav.classList.remove('mobile-open');
+                nav.classList.add('hidden');
+                menuBtn.setAttribute('aria-expanded', 'false');
+            });
         });
     }
 
