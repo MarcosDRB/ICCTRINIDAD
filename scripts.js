@@ -205,6 +205,32 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // Contact form -> WhatsApp
+    const contactWhatsAppForm = document.getElementById('contactWhatsAppForm');
+    if (contactWhatsAppForm) {
+        contactWhatsAppForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const target = String(contactWhatsAppForm.dataset.whatsapp || '').replace(/\D/g, '');
+            const nameInput = document.getElementById('contactName');
+            const messageInput = document.getElementById('contactMessage');
+            const name = (nameInput && nameInput.value ? nameInput.value : '').trim();
+            const message = (messageInput && messageInput.value ? messageInput.value : '').trim();
+
+            if (!target) {
+                alert('No hay un número de WhatsApp configurado.');
+                return;
+            }
+            if (!name || !message) {
+                alert('Por favor completa tu nombre y mensaje.');
+                return;
+            }
+
+            const text = `Hola, soy ${name}. ${message}`;
+            const whatsappUrl = `https://wa.me/${target}?text=${encodeURIComponent(text)}`;
+            window.open(whatsappUrl, '_blank', 'noopener');
+        });
+    }
+
     /* ==== Agenda compartida (API) editable por pastor ==== */
     const AGENDA_API_BASE = '/api/agenda';
     const agendaList = document.getElementById('agendaList');
