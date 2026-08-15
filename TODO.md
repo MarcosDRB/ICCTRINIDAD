@@ -15,3 +15,9 @@
 - [x] Quitar lista de temas lateral (ya están en el desplegable)
 - [x] Actualizar envío por WhatsApp con los nuevos campos
 - [x] Verificar el resultado en el navegador
+
+# TODO — Logos de redes sociales oficiales
+
+- [x] Reemplazar logos genéricos por los oficiales de Facebook, Instagram y YouTube en todas las páginas
+- [x] Colores de marca (Facebook azul #1877F2, Instagram gradiente, YouTube rojo #FF0000)
+- [x] Push a GitHub
