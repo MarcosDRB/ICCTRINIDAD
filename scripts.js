@@ -212,8 +212,16 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             const target = String(contactWhatsAppForm.dataset.whatsapp || '').replace(/\D/g, '');
             const nameInput = document.getElementById('contactName');
+            const emailInput = document.getElementById('contactEmail');
+            const countryInput = document.getElementById('contactCountry');
+            const topicInput = document.getElementById('contactTopic');
             const messageInput = document.getElementById('contactMessage');
+            const consentInput = document.getElementById('contactConsent');
+
             const name = (nameInput && nameInput.value ? nameInput.value : '').trim();
+            const email = (emailInput && emailInput.value ? emailInput.value : '').trim();
+            const country = (countryInput && countryInput.value ? countryInput.value : '').trim();
+            const topic = (topicInput && topicInput.value ? topicInput.value : '').trim();
             const message = (messageInput && messageInput.value ? messageInput.value : '').trim();
 
             if (!target) {
@@ -225,7 +233,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            const text = `Hola, soy ${name}. ${message}`;
+            if (consentInput && !consentInput.checked) {
+                alert('Debes aceptar la Política de Tratamiento de Datos Personales para enviar tu petición.');
+                return;
+            }
+
+            const lines = [
+                `Hola, soy ${name}.`,
+                email ? `Correo: ${email}` : '',
+                country ? `País: ${country}` : '',
+                topic ? `Tema: ${topic}` : '',
+                '',
+                message
+            ].filter(Boolean);
+
+            const text = lines.join('\n');
             const whatsappUrl = `https://wa.me/${target}?text=${encodeURIComponent(text)}`;
             window.open(whatsappUrl, '_blank', 'noopener');
         });
