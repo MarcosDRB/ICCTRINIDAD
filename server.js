@@ -100,7 +100,20 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-ensureDataFile();
-app.listen(PORT, () => {
-    console.log(`ICC site running at http://localhost:${PORT}`);
-});
+if (require.main === module) {
+    ensureDataFile();
+    app.listen(PORT, () => {
+        console.log(`ICC site running at http://localhost:${PORT}`);
+    });
+}
+
+module.exports = {
+    app,
+    ensureDataFile,
+    readEvents,
+    writeEvents,
+    sortEvents,
+    isAuthorized,
+    defaultEvents,
+    DATA_FILE
+};
