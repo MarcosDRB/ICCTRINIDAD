@@ -153,20 +153,33 @@ app.use((err, req, res, next) => {
     res.status(status).json({ error: status === 500 ? 'Error interno del servidor' : err.message });
 });
 
-process.on('unhandledRejection', reason => {
-    console.error('Unhandled promise rejection:', reason);
-});
+if (require.main === module) {
+    process.on('unhandledRejection', reason => {
+        console.error('Unhandled promise rejection:', reason);
+    });
 
-try {
-    ensureDataFile();
-} catch (err) {
-    console.error(`No se pudo preparar el archivo de agenda en ${DATA_FILE}:`, err);
-    process.exit(1);
+    try {
+        ensureDataFile();
+    } catch (err) {
+        console.error(`No se pudo preparar el archivo de agenda en ${DATA_FILE}:`, err);
+        process.exit(1);
+    }
+
+    app.listen(PORT, () => {
+        console.log(`ICC site running at http://localhost:${PORT}`);
+    }).on('error', err => {
+        console.error(`No se pudo iniciar el servidor en el puerto ${PORT}:`, err);
+        process.exit(1);
+    });
 }
 
-app.listen(PORT, () => {
-    console.log(`ICC site running at http://localhost:${PORT}`);
-}).on('error', err => {
-    console.error(`No se pudo iniciar el servidor en el puerto ${PORT}:`, err);
-    process.exit(1);
-});
+module.exports = {
+    app,
+    ensureDataFile,
+    readEvents,
+    writeEvents,
+    sortEvents,
+    isAuthorized,
+    defaultEvents,
+    DATA_FILE
+};
