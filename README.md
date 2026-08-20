@@ -24,16 +24,16 @@ Abre en navegador:
 
 ## Clave pastoral
 
-Por defecto, la clave de edición es:
-
-- `TRINIDAD2026`
-
-Para cambiarla en producción:
+No hay clave por defecto. La edición de la agenda solo funciona si defines
+`AGENDA_ADMIN_PASSWORD`; si no está definida, los endpoints de edición
+responden `401` y el servidor lo advierte al arrancar.
 
 ```bash
 set AGENDA_ADMIN_PASSWORD=TU_CLAVE_SEGURA
 npm.cmd start
 ```
+
+Nunca guardes la clave en el repositorio ni la compartas por chat.
 
 ## Cómo funciona la agenda
 
