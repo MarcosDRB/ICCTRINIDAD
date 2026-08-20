@@ -2439,3 +2439,176 @@ nav a:hover,
         transform: translateY(0);
     }
 }
+
+/* ===== Ajustes responsivos para móvil ===== */
+@media (max-width:900px) {
+
+    /* Evita desbordes horizontales por medios sin límite de ancho */
+    img,
+    video,
+    iframe {
+        max-width: 100%;
+    }
+
+    /* El collage de ministerios usaba posicionamiento absoluto de escritorio
+       y se salía de la pantalla superponiéndose al texto */
+    .home-pdf-ministries .home-pdf-collage {
+        position: static;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        min-height: 0;
+        overflow: visible;
+    }
+
+    .home-pdf-ministries .home-pdf-collage-a,
+    .home-pdf-ministries .home-pdf-collage-b,
+    .home-pdf-ministries .home-pdf-collage-c {
+        position: relative !important;
+        width: 100% !important;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+        margin: 0 !important;
+        transform: none !important;
+        max-height: 320px;
+        object-fit: cover;
+    }
+
+    #ubicacion.home-pdf-location {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    #ubicacion.home-pdf-location .home-pdf-subtitle {
+        font-size: clamp(1.6rem, 7.4vw, 2.4rem);
+    }
+}
+
+@media (max-width:640px) {
+
+    /* background-attachment:fixed provoca saltos y zonas en blanco en móvil */
+    body {
+        background-attachment: scroll;
+    }
+
+    /* Hero: el video ocupa todo el escenario y el texto se apoya abajo,
+       antes el título quedaba fuera del video y desproporcionado */
+    .home-hero-stage {
+        min-height: min(76svh, 540px);
+        margin-top: 0;
+        align-items: stretch;
+    }
+
+    .home-hero-shell {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        aspect-ratio: auto;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    /* Tailwind (CDN) inyecta sus utilidades después de esta hoja, por eso
+       el layer necesita mayor especificidad que .items-start */
+    .home-hero-stage .home-hero-text-layer {
+        align-items: flex-end;
+        padding: 0 0 20px;
+        background: linear-gradient(180deg, rgba(6, 12, 24, 0) 32%, rgba(6, 12, 24, 0.82) 100%);
+    }
+
+    .home-hero-text-layer .hero-content {
+        max-width: 100%;
+    }
+
+    .home-hero-copy {
+        width: 100%;
+        padding: 0 16px;
+    }
+
+    .home-hero-kicker {
+        font-size: 0.95rem;
+    }
+
+    .home-hero-title {
+        font-size: clamp(1.9rem, 9.2vw, 2.6rem);
+        max-width: 16ch;
+    }
+
+    .home-hero-copy>p:nth-of-type(2) {
+        font-size: 1rem;
+        margin-top: 6px;
+    }
+
+    .home-hero-actions {
+        margin-top: 1rem;
+        gap: 10px;
+    }
+
+    .home-hero-btn {
+        min-width: 0;
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 0.95rem;
+    }
+
+    /* Retrato de pastores: ocupaba casi dos pantallas completas */
+    .home-pastors-image {
+        max-height: 62svh;
+    }
+
+    .home-pastors-copy {
+        padding-top: 1rem;
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    /* Formulario del boletín: el botón quedaba cortado a la derecha */
+    .newsletter-form .flex {
+        flex-wrap: wrap;
+    }
+
+    .newsletter-form input {
+        flex: 1 1 100%;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .newsletter-form button {
+        width: 100%;
+    }
+
+    /* Botón flotante dentro del área segura del viewport */
+    .back-to-top {
+        right: max(12px, env(safe-area-inset-right));
+        bottom: max(12px, env(safe-area-inset-bottom));
+    }
+}
+
+@media (max-width:767px) {
+
+    /* El menú desplegable heredaba gap/centrado de las utilidades del header
+       y quedaba enorme, con enlaces muy separados */
+    header nav ul.mobile-open {
+        gap: 2px;
+        align-items: stretch;
+        padding: 8px;
+    }
+
+    header nav ul.mobile-open li a {
+        display: block;
+        padding: 11px 12px;
+        border-radius: 8px;
+        text-align: left;
+        font-size: 1rem;
+    }
+
+    header nav ul.mobile-open li a:hover,
+    header nav ul.mobile-open li a:focus {
+        background: rgba(255, 255, 255, 0.08);
+    }
+}
