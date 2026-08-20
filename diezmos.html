@@ -11,31 +11,7 @@
 </head>
 
 <body class="antialiased text-gray-800">
-    <header class="brand-bg text-white home-topbar">
-        <div class="max-w-6xl mx-auto flex items-center justify-between p-4 home-topbar-inner">
-            <a href="index.html" class="flex items-center gap-3 home-brand-link">
-                <img src="media/BRANDING - ICC LA TRINIDAD/1.png" alt="Logo ICC La Trinidad"
-                    class="h-16 w-16 object-contain rounded" />
-                <div>
-                    <h1 class="text-xl font-semibold">Iglesia Comunidad Cristiana La Trinidad</h1>
-                    <p class="text-sm opacity-75">Adorar · Crecer · Servir</p>
-                </div>
-            </a>
-            <nav>
-                <ul class="hidden md:flex gap-6 items-center">
-                    <li><a class="nav-link hover:underline" href="index.html">Inicio</a></li>
-                    <li><a class="nav-link hover:underline" href="conocenos.html">Conócenos</a></li>
-                    <li><a class="nav-link hover:underline" href="eventos.html">Eventos</a></li>
-                    <li><a class="nav-link hover:underline" href="predicas.html">Prédicas</a></li>
-                    <li><a class="nav-link hover:underline" href="liderazgo.html">Liderazgo</a></li>
-                    <li><a class="nav-link hover:underline" href="grupos.html">Grupos</a></li>
-                    <li><a class="nav-link hover:underline" href="testimonios.html">Testimonios</a></li>
-                    <li><a class="nav-link hover:underline" href="diezmos.html">Diezmos</a></li>
-                </ul>
-            </nav>
-            <button id="menuBtn" class="md:hidden p-2 border rounded">Menú</button>
-        </div>
-    </header>
+    <div data-site-header></div>
     <main class="max-w-6xl mx-auto p-6">
         <section class="card">
             <h2 class="text-2xl font-semibold">Diezmos y Ofrendas</h2>
@@ -68,44 +44,8 @@
             </div>
         </section>
     </main>
-    <footer class="site-footer">
-        <div class="max-w-6xl mx-auto text-center">
-            <div class="text-sm">Iglesia Comunidad Cristiana La Trinidad - Todos los derechos reservados</div>
-            <div class="text-sm mt-2">📍 CLL 81 # 18D-21, 2do Piso, Los Almendros | c.c.latrinidad@hotmail.com</div>
-            <div class="social-icons mt-3">
-                <a class="social-btn" href="https://www.facebook.com/comunidad.latrinidad" aria-label="facebook"
-                    title="Facebook">
-                    <svg viewBox="0 0 24 24" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047v-2.66c0-3.026 1.792-4.697 4.533-4.697 1.313 0 2.686.236 2.686.236v2.971H15.83c-1.491 0-1.956.931-1.956 1.886v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z" />
-                    </svg>
-                </a>
-                <a class="social-btn" href="https://www.instagram.com/icc.latrinidad" aria-label="instagram"
-                    title="Instagram" style="margin-left:8px">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="igGradDiezmos" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0%" stop-color="#f58529" />
-                                <stop offset="25%" stop-color="#dd2a7b" />
-                                <stop offset="55%" stop-color="#8134af" />
-                                <stop offset="75%" stop-color="#515bd4" />
-                                <stop offset="100%" stop-color="#3897f0" />
-                            </linearGradient>
-                        </defs>
-                        <path fill="url(#igGradDiezmos)"
-                            d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.336 3.608 1.311.975.975 1.249 2.242 1.311 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.336 2.633-1.311 3.608-.975.975-2.242 1.249-3.608 1.311-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.336-3.608-1.311-.975-.975-1.249-2.242-1.311-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.336-2.633 1.311-3.608.975-.975 2.242-1.249 3.608-1.311C8.416 2.175 8.796 2.163 12 2.163zm0 1.802c-3.148 0-3.521.012-4.763.069-1.151.052-1.776.245-2.192.407-.551.215-.944.472-1.357.885-.413.413-.67.806-.885 1.357-.162.416-.355 1.041-.407 2.192-.057 1.242-.069 1.615-.069 4.763s.012 3.521.069 4.763c.052 1.151.245 1.776.407 2.192.215.551.472.944.885 1.357.413.413.806.67 1.357.885.416.162 1.041.355 2.192.407 1.242.057 1.615.069 4.763.069s3.521-.012 4.763-.069c1.151-.052 1.776-.245 2.192-.407.551-.215.944-.472 1.357-.885.413-.413.67-.806.885-1.357.162-.416.355-1.041.407-2.192.057-1.242.069-1.615.069-4.763s-.012-3.521-.069-4.763c-.052-1.151-.245-1.776-.407-2.192-.215-.551-.472-.944-.885-1.357-.413-.413-.806-.67-1.357-.885-.416-.162-1.041-.355-2.192-.407-1.242-.057-1.615-.069-4.763-.069zm0 2.474a5.561 5.561 0 100 11.122 5.561 5.561 0 000-11.122zm0 9.167a3.606 3.606 0 110-7.212 3.606 3.606 0 010 7.212zm7.097-9.393a1.3 1.3 0 11-2.6 0 1.3 1.3 0 012.6 0z" />
-                    </svg>
-                </a>
-                <a class="social-btn" href="https://youtube.com/@icc.latrinidad" aria-label="youtube"
-                    title="YouTube" style="margin-left:8px">
-                    <svg viewBox="0 0 24 24" fill="#FF0000" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.87.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </footer>
+    <div data-site-footer></div>
+    <script src="site-chrome.js"></script>
     <script src="scripts.js"></script>
 </body>
 

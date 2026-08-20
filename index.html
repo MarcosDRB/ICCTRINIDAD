@@ -7,39 +7,10 @@
     <meta name="description" content="Iglesia Comunidad Cristiana La Trinidad" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="media/logo-favicon.png" />
-    <style>
-        :root { --brand-navy: #0b2340; --brand-gold: #c39b4e; }
-        .brand-bg { background-color: var(--brand-navy) }
-        .brand-accent { color: var(--brand-gold) }
-    </style>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="antialiased text-gray-800 home-bethel">
-    <header class="brand-bg text-white home-topbar">
-        <div class="max-w-6xl mx-auto flex items-center justify-between p-4 home-topbar-inner">
-            <a href="index.html" class="flex items-center gap-3 home-brand-link">
-                <img src="media/BRANDING%20-%20ICC%20LA%20TRINIDAD/1.png" alt="Logo" class="h-14 w-14 object-contain rounded" />
-                <div>
-                    <h1 class="text-xl font-semibold">Iglesia Comunidad Cristiana La Trinidad</h1>
-                    <p class="text-sm opacity-75">Adorar · Crecer · Servir</p>
-                </div>
-            </a>
-            <nav>
-                <ul class="hidden md:flex gap-6 items-center">
-                    <li><a class="nav-link hover:underline" href="index.html">Inicio</a></li>
-                    <li><a class="nav-link hover:underline" href="conocenos.html">Conócenos</a></li>
-                    <li><a class="nav-link hover:underline" href="eventos.html">Eventos</a></li>
-                    <li><a class="nav-link hover:underline" href="predicas.html">Prédicas</a></li>
-                    <li><a class="nav-link hover:underline" href="liderazgo.html">Liderazgo</a></li>
-                    <li><a class="nav-link hover:underline" href="grupos.html">Grupos</a></li>
-                    <li><a class="nav-link hover:underline" href="testimonios.html">Testimonios</a></li>
-                    <li><a class="nav-link hover:underline" href="historias.html">Historias</a></li>
-                    <li><a class="nav-link hover:underline" href="diezmos.html">Diezmos</a></li>
-                </ul>
-                <button id="menuBtn" class="md:hidden p-2 border rounded">Menú</button>
-            </nav>
-        </div>
-    </header>
+    <div data-site-header></div>
 
     <main class="home-main-wide">
         <section class="mt-0 px-0">
@@ -257,12 +228,7 @@
         </section>
     </main>
 
-    <footer class="site-footer">
-        <div class="max-w-6xl mx-auto text-center">
-            <div class="text-sm">Iglesia Comunidad Cristiana La Trinidad - Todos los derechos reservados</div>
-            <div class="text-sm mt-2">📍 CLL 81 # 18D-21, 2do Piso, Los Almendros | c.c.latrinidad@hotmail.com</div>
-        </div>
-    </footer>
+    <div data-site-footer></div>
 
     <!-- MODAL DE OPCIONES DE ENVÍO -->
     <div id="sendOptionsModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50">
@@ -288,6 +254,8 @@
             <button id="closeSendModal" class="mt-4 w-full py-2 text-sm text-gray-600 hover:text-gray-800">Cancelar</button>
         </div>
     </div>
+
+    <script src="site-chrome.js"></script>
 
     <script src="scripts.js"></script>
 </body>

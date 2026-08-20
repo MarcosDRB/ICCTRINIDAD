@@ -9,6 +9,14 @@
     --page-bg: #fbfdff;
 }
 
+.brand-bg {
+    background-color: var(--brand-navy)
+}
+
+.brand-accent {
+    color: var(--brand-gold)
+}
+
 html,
 body {
     height: 100%
