@@ -218,13 +218,24 @@ describe('POST /api/agenda/update-dates', () => {
         expect(readDataFile().events.find(e => e.id === 'a').date).toBe('2026-04-01T10:00:00');
     });
 
-    test('ignores ids that do not exist', async () => {
+    test('reports ids that do not exist without touching the data file', async () => {
         const res = await request(server.app)
             .post('/api/agenda/update-dates')
             .send({ password: PASSWORD, dates: [{ id: 'zzz', date: '2026-04-01T10:00:00' }] });
 
-        expect(res.status).toBe(200);
-        expect(res.body.events.map(e => e.date)).toEqual(['2026-01-01T10:00:00', '2026-03-01T10:00:00']);
+        expect(res.status).toBe(404);
+        expect(res.body).toEqual({ error: 'Eventos no encontrados', ids: ['zzz'] });
+        expect(readDataFile().events.map(e => e.date)).toEqual(['2026-01-01T10:00:00', '2026-03-01T10:00:00']);
+    });
+
+    test('rejects unparseable dates', async () => {
+        const res = await request(server.app)
+            .post('/api/agenda/update-dates')
+            .send({ password: PASSWORD, dates: [{ id: 'a', date: 'mañana' }] });
+
+        expect(res.status).toBe(400);
+        expect(res.body).toEqual({ error: 'Fechas inválidas', ids: ['a'] });
+        expect(readDataFile().events.find(e => e.id === 'a').date).toBe('2026-01-01T10:00:00');
     });
 
     test('rejects an unauthorized request without touching the data file', async () => {

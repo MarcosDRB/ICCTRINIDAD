@@ -219,7 +219,7 @@ describe('WhatsApp sending', () => {
 
 describe('email sending', () => {
     test('posts the form to FormSubmit, resets it and closes the modal on success', async () => {
-        global.fetch = jest.fn().mockResolvedValue({ ok: true, json: async () => ({ success: 'true' }) });
+        global.fetch = jest.fn().mockResolvedValue({ ok: true, status: 200, text: async () => JSON.stringify({ success: 'true' }) });
         loadScripts(CONTACT_MARKUP);
         el('showSendOptions').click();
 
@@ -244,7 +244,7 @@ describe('email sending', () => {
     });
 
     test('keeps the form data and warns when FormSubmit responds with an error', async () => {
-        global.fetch = jest.fn().mockResolvedValue({ ok: false, json: async () => ({ error: 'nope' }) });
+        global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 500, text: async () => JSON.stringify({ error: 'nope' }) });
         loadScripts(CONTACT_MARKUP);
         el('showSendOptions').click();
 
@@ -254,6 +254,21 @@ describe('email sending', () => {
         await Promise.resolve();
 
         expect(window.alert).toHaveBeenCalledWith(expect.stringContaining('Hubo un error al enviar el mensaje.'));
+        expect(el('sendOptionsModal').classList.contains('hidden')).toBe(false);
+        expect(el('sendEmail').disabled).toBe(false);
+    });
+
+    test('warns when FormSubmit returns a success status with a non-JSON body', async () => {
+        global.fetch = jest.fn().mockResolvedValue({ ok: true, status: 200, text: async () => '<html>oops</html>' });
+        loadScripts(CONTACT_MARKUP);
+        el('showSendOptions').click();
+
+        el('sendEmail').click();
+        await Promise.resolve();
+        await Promise.resolve();
+        await Promise.resolve();
+
+        expect(window.alert).toHaveBeenCalledWith(expect.stringContaining('No pudimos confirmar el envío del mensaje.'));
         expect(el('sendOptionsModal').classList.contains('hidden')).toBe(false);
         expect(el('sendEmail').disabled).toBe(false);
     });

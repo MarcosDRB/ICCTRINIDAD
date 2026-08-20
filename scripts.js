@@ -81,11 +81,26 @@ document.addEventListener('DOMContentLoaded', function () {
     if (sendWhatsAppBtn && contactWhatsAppForm) {
         sendWhatsAppBtn.addEventListener('click', function () {
             const target = String(contactWhatsAppForm.dataset.whatsapp || '').replace(/\D/g, '');
-            const name = document.getElementById('contactName').value.trim();
-            const email = document.getElementById('contactEmail').value.trim();
-            const country = document.getElementById('contactCountry').value.trim();
-            const topic = document.getElementById('contactTopic').value.trim();
-            const message = document.getElementById('contactMessage').value.trim();
+            const fieldValue = id => {
+                const field = document.getElementById(id);
+                if (!field) {
+                    throw new Error(`Falta el campo del formulario: ${id}`);
+                }
+                return String(field.value || '').trim();
+            };
+
+            let name, email, country, topic, message;
+            try {
+                name = fieldValue('contactName');
+                email = fieldValue('contactEmail');
+                country = fieldValue('contactCountry');
+                topic = fieldValue('contactTopic');
+                message = fieldValue('contactMessage');
+            } catch (error) {
+                console.error('Error leyendo el formulario de contacto:', error);
+                alert('El formulario está incompleto. Recarga la página e intenta de nuevo.');
+                return;
+            }
 
             if (!target) {
                 alert('No hay un número de WhatsApp configurado.');
@@ -124,19 +139,33 @@ document.addEventListener('DOMContentLoaded', function () {
                     body: formData
                 });
 
-                const result = await response.json();
-
-                if (response.ok) {
-                    alert('¡Mensaje enviado exitosamente!\n\nHemos recibido tu petición de oración. Dios te bendiga. - ICC La Trinidad');
-                    contactWhatsAppForm.reset();
-                    closeSendModal();
-                } else {
-                    alert('Hubo un error al enviar el mensaje.\n\nPor favor intenta de nuevo o usa la opción de WhatsApp.');
-                    console.error('Error FormSubmit:', result);
+                const rawBody = await response.text();
+                let result = null;
+                let parseError = null;
+                try {
+                    result = rawBody ? JSON.parse(rawBody) : null;
+                } catch (error) {
+                    parseError = error;
                 }
+
+                if (!response.ok) {
+                    console.error(`Error FormSubmit (HTTP ${response.status}):`, result || rawBody);
+                    alert('Hubo un error al enviar el mensaje.\n\nPor favor intenta de nuevo o usa la opción de WhatsApp.');
+                    return;
+                }
+
+                if (parseError) {
+                    console.error('Respuesta inesperada de FormSubmit:', parseError, rawBody);
+                    alert('No pudimos confirmar el envío del mensaje.\n\nPor favor intenta de nuevo o usa la opción de WhatsApp.');
+                    return;
+                }
+
+                alert('¡Mensaje enviado exitosamente!\n\nHemos recibido tu petición de oración. Dios te bendiga. - ICC La Trinidad');
+                contactWhatsAppForm.reset();
+                closeSendModal();
             } catch (error) {
-                alert(' Error de conexión.\n\nPor favor intenta de nuevo o usa la opción de WhatsApp.');
-                console.error('Error:', error);
+                alert('Error de conexión.\n\nPor favor intenta de nuevo o usa la opción de WhatsApp.');
+                console.error('Error enviando el formulario de contacto:', error);
             } finally {
                 sendEmailBtn.innerHTML = originalText;
                 sendEmailBtn.disabled = false;
