@@ -1,4 +1,4 @@
-/* styles.css — Estilo profesional, tipografías, espaciado, componentes */
+/* styles.css — Estilo profesional con responsive completo */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@300;700&display=swap');
 
 :root {
@@ -23,9 +23,9 @@ body {
     position: relative;
     overflow-x: hidden;
     background-image:
-        radial-gradient(circle at 12% 18%, rgba(97, 158, 214, 0.34) 0%, rgba(97, 158, 214, 0) 42%),
+        radial-gradient(circle at 12% 18%, rgb(255, 255, 255) 0%, rgba(97, 158, 214, 0) 42%),
         radial-gradient(circle at 85% 10%, rgba(9, 88, 139, 0.22) 0%, rgba(9, 88, 139, 0) 40%),
-        linear-gradient(180deg, #195780 0%, #619ed6 44%, #ffffff 100%);
+        linear-gradient(180deg, #ffffff 0%, #ffffff 44%, #ffffff 100%);
     background-attachment: fixed;
 }
 
@@ -286,7 +286,7 @@ h4 {
 .home-pdf-lead,
 .home-pdf-text {
     margin-top: 10px;
-    color: #ffffff;
+    color: #1f2937;
     font-size: clamp(0.9rem, 1.1vw, 1.05rem);
     line-height: 1.5;
     max-width: 95ch;
@@ -352,7 +352,7 @@ h4 {
 
 .home-pastors-title {
     margin: 0 0 12px 0;
-    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-family: Inter, sans-serif;
     font-size: clamp(2rem, 4vw, 3.5rem);
     line-height: 1.05;
     font-weight: 800;
@@ -418,7 +418,7 @@ h4 {
 
 .home-pdf-eyebrow {
     margin: 0 0 8px 0;
-    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-family: Inter, sans-serif;
     color: #111827;
     font-size: clamp(0.7rem, 0.9vw, 0.85rem);
     font-weight: 700;
@@ -428,8 +428,8 @@ h4 {
 
 .home-pdf-subtitle {
     margin: 0 0 12px 0;
-    color: #9fa4af;
-    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color: #111827;
+    font-family: Inter, sans-serif;
     font-size: clamp(2rem, 4vw, 3.5rem);
     font-weight: 800;
     line-height: 1.05;
@@ -484,7 +484,7 @@ h4 {
 .home-pdf-ministries .home-pdf-collage {
     min-height: 380px !important;
     display: block;
-    overflow: visible;
+    overflow: hidden;
     border-radius: 0;
     position: relative;
 }
@@ -655,11 +655,11 @@ h4 {
 .home-pdf-event-media {
     background: #fff;
     border-radius: 8px;
-    overflow: visible;
+    overflow: hidden;
     max-width: 100%;
-    margin: -3.4rem 0 0 -0.8rem;
+    margin: 0;
     align-self: start;
-    transform: translateY(-34px);
+    transform: none;
 }
 
 .home-pdf-event-image {
@@ -670,7 +670,7 @@ h4 {
     object-fit: contain;
     border-radius: 8px;
     background: #fff;
-    transform: translate(-10px, -30px);
+    transform: none;
 }
 
 .home-pdf-event-copy {
@@ -779,6 +779,7 @@ h4 {
     gap: 1rem;
     align-items: center;
     width: 100%;
+    min-height: 420px;
     background: linear-gradient(135deg, rgba(4, 14, 28, 0.78) 0%, rgba(7, 24, 44, 0.58) 100%),
         url('media/Historia instagram Mensaje  Monocromatico (Banner para YouTube)_20260725_083455_0000 (1).png');
     background-size: cover;
@@ -912,7 +913,6 @@ h4 {
     border: 1px solid rgba(11, 35, 64, 0.08);
 }
 
-/* ===== Imágenes dentro de los slots de la galería ===== */
 .home-pdf-gallery-slot img {
     width: 100%;
     height: 100%;
@@ -927,12 +927,24 @@ h4 {
     transform: scale(1.05);
 }
 
-/* Ocultar el span cuando hay imagen */
 .home-pdf-gallery-slot:has(img) span {
     display: none;
 }
 
-@media (max-width:900px) {
+.home-pdf-gallery-slot-link {
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.home-pdf-gallery-slot-link:hover {
+    transform: scale(1.03);
+}
+
+/* ===== RESPONSIVE COMPLETO ===== */
+
+@media (max-width: 900px) {
     .hero-image {
         height: 56vh;
         min-height: 320px;
@@ -1007,43 +1019,100 @@ h4 {
     }
 
     .home-pdf-gallery-card {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
+        padding: 1.5rem 1rem;
+        gap: 1.5rem;
     }
 
     .home-pdf-gallery-side {
+        flex-direction: row;
         justify-content: center;
         flex-wrap: wrap;
-    }
-
-    .home-pdf-gallery-copy {
-        padding: 0.3rem 0;
+        gap: 0.8rem;
     }
 
     .home-pdf-gallery-slot {
-        min-height: 160px;
-        min-width: 140px;
+        min-height: 140px;
+        min-width: 120px;
+        flex: 1;
+        max-width: 160px;
     }
 
-    .home-pdf-event-card {
-        min-height: auto;
+    .home-pdf-gallery-slot--tilted {
+        transform: none !important;
     }
 
-    .home-pdf-event-copy {
-        min-height: auto;
-        margin-top: 0;
+    .home-pdf-gallery-copy {
+        min-width: auto;
+        width: 100%;
+        max-width: 100%;
+        padding: 1rem 0.5rem;
+        order: -1;
     }
 
-    .home-pdf-events-intro {
-        margin-top: 0;
+    .home-pdf-gallery-copy .home-pdf-subtitle {
+        font-size: clamp(1.3rem, 5vw, 2rem);
+        max-width: 100%;
     }
 
     .home-pdf-event-media {
-        min-height: auto;
-        margin-top: 0;
+        margin: 0 !important;
+        transform: none !important;
+    }
+
+    .home-pdf-event-image {
+        transform: none !important;
+    }
+
+    .home-pdf-event-copy {
+        align-items: flex-start;
+        text-align: left;
+        padding-right: 0;
+    }
+
+    .home-pdf-event-card,
+    .home-pdf-location {
+        gap: 0.9rem;
+    }
+
+    .home-pdf-action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .home-pdf-event-image,
+    .home-pdf-location-image {
+        max-height: none;
+        transform: none;
     }
 
     .home-pdf-ministries-layout {
         min-height: auto;
+        gap: 1.5rem;
+    }
+
+    .home-pdf-ministries .home-pdf-collage {
+        min-height: auto !important;
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .home-pdf-ministries .home-pdf-collage-a,
+    .home-pdf-ministries .home-pdf-collage-b {
+        position: relative !important;
+        width: 100% !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+        z-index: auto !important;
+    }
+
+    .home-pdf-ministries .home-pdf-collage img {
+        max-height: 280px !important;
     }
 
     .home-pdf-ministry-image {
@@ -1078,24 +1147,17 @@ h4 {
         margin-top: 0;
     }
 
-    .home-pdf-event-card,
-    .home-pdf-location {
-        gap: 0.9rem;
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 1.6rem;
     }
 
-    .home-pdf-action-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .home-pdf-event-image,
-    .home-pdf-location-image {
-        max-height: none;
-        transform: none;
+    .contact-map {
+        height: 240px;
     }
 }
 
-@media (max-width:640px) {
+@media (max-width: 640px) {
     .home-topbar-inner {
         min-height: 70px;
         padding-left: 0.75rem;
@@ -1195,7 +1257,7 @@ h4 {
 
     .home-pdf-section {
         width: 100%;
-        padding: 1rem 0.85rem;
+        padding: 1.2rem 1rem !important;
         margin-top: 0.6rem;
     }
 
@@ -1230,6 +1292,116 @@ h4 {
 
     .hero-image {
         height: 260px;
+    }
+
+    /* Ministerios en móvil */
+    .home-pdf-ministries .home-pdf-collage {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .home-pdf-ministries .home-pdf-collage img {
+        max-height: 240px !important;
+    }
+
+    /* Galería en móvil */
+    .home-pdf-gallery-side {
+        flex-wrap: wrap;
+    }
+
+    .home-pdf-gallery-slot {
+        min-height: 110px;
+        min-width: 100px;
+        flex: 1 1 45%;
+        max-width: none;
+    }
+
+    .home-pdf-gallery-slot--tilted {
+        transform: none !important;
+    }
+
+    .home-pdf-gallery-copy .home-pdf-eyebrow {
+        font-size: 0.7rem;
+    }
+
+    .home-pdf-gallery-copy .home-pdf-subtitle {
+        font-size: clamp(1.2rem, 5vw, 1.8rem);
+    }
+
+    .home-pdf-gallery-btn {
+        padding: 12px 24px;
+        min-width: 180px;
+    }
+
+    /* Textos en móvil */
+    .home-pastors-title {
+        font-size: clamp(1.5rem, 7vw, 2.2rem);
+        max-width: 100%;
+    }
+
+    .home-pdf-subtitle {
+        font-size: clamp(1.5rem, 6vw, 2.2rem);
+        max-width: 100%;
+    }
+
+    .home-pdf-eyebrow {
+        font-size: 0.7rem;
+    }
+
+    .home-pdf-text {
+        font-size: 0.95rem;
+    }
+
+    /* Ubicación en móvil */
+    #ubicacion.home-pdf-location {
+        padding: 1.2rem 1rem;
+    }
+
+    #ubicacion.home-pdf-location .home-pdf-subtitle {
+        font-size: clamp(1.5rem, 6vw, 2.2rem);
+    }
+
+    /* Contacto en móvil */
+    .contact-title {
+        font-size: clamp(1.6rem, 7vw, 2.5rem);
+    }
+
+    .contact-map {
+        height: 220px;
+    }
+
+    .contact-submit-btn {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-pdf-gallery-slot {
+        min-height: 100px;
+        min-width: 90px;
+        flex: 1 1 40%;
+    }
+
+    .home-pdf-gallery-copy .home-pdf-subtitle {
+        font-size: clamp(1.1rem, 5.5vw, 1.6rem);
+    }
+
+    .home-pdf-gallery-copy .home-pdf-eyebrow {
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+    }
+
+    .home-hero-title {
+        font-size: clamp(1.8rem, 11vw, 2.5rem);
+    }
+
+    .home-hero-kicker {
+        font-size: 0.9rem;
+    }
+
+    .home-hero-copy>p:nth-of-type(2) {
+        font-size: 0.9rem;
     }
 }
 
@@ -2091,7 +2263,7 @@ nav a:hover,
 
 .home-event-eyebrow {
     margin: 0 0 8px 0;
-    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-family: Inter, sans-serif;
     color: #111827;
     font-size: clamp(0.7rem, 0.9vw, 0.85rem);
     font-weight: 700;
@@ -2110,7 +2282,7 @@ nav a:hover,
 .home-event-subtitle {
     margin: 0 0 12px 0;
     color: #111827;
-    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-family: Inter, sans-serif;
     font-size: clamp(2rem, 4vw, 3.5rem);
     font-weight: 800;
     line-height: 1.05;
@@ -2203,8 +2375,8 @@ nav a:hover,
 }
 
 .home-pdf-contact {
-    border-top: 8px solid #619ed6;
-    background: #fff;
+    border-top: 8px solid #8a9597;
+    background: #8a9597;
 }
 
 .contact-wrap {
@@ -2408,18 +2580,6 @@ nav a:hover,
     }
 }
 
-@media (max-width:640px) {
-    .contact-submit-btn {
-        width: 100%;
-        min-width: 0;
-    }
-
-    .contact-topics-list {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ===== Modal de opciones de envío ===== */
 #sendOptionsModal {
     backdrop-filter: blur(4px);
 }
