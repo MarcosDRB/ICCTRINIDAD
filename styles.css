@@ -2730,8 +2730,8 @@ nav a:hover,
 .quienes-card {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(180deg, #fff 0%, var(--palette-white) 100%);
-    border: 1px solid rgba(97, 158, 214, 0.35);
+    background: linear-gradient(165deg, rgba(97, 158, 214, 0.26) 0%, rgba(9, 88, 139, 0.1) 100%);
+    border: 1px solid rgba(9, 88, 139, 0.22);
     border-radius: 14px;
     box-shadow: 0 10px 26px rgba(9, 88, 139, 0.08);
     transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
@@ -2743,8 +2743,11 @@ nav a:hover,
     inset: 0 auto 0 0;
     width: 4px;
     background: linear-gradient(180deg, var(--palette-blue) 0%, var(--palette-blue-light) 100%);
-    opacity: 0;
-    transition: opacity .25s ease;
+    transition: width .25s ease;
+}
+
+.quienes-card:hover::before {
+    width: 6px;
 }
 
 .quienes-card:hover {
@@ -2753,9 +2756,6 @@ nav a:hover,
     box-shadow: 0 18px 38px rgba(9, 88, 139, 0.18);
 }
 
-.quienes-card:hover::before {
-    opacity: 1;
-}
 
 .quienes-card--xs {
     padding: 1.1rem 1.2rem;
@@ -2767,6 +2767,16 @@ nav a:hover,
 
 .quienes-card--md {
     padding: 1.75rem 1.9rem;
+    background: linear-gradient(150deg, var(--palette-blue) 0%, var(--palette-blue-deep) 55%, var(--palette-black) 145%);
+    border-color: rgba(97, 158, 214, 0.45);
+}
+
+.quienes-card--md .quienes-card-title {
+    color: var(--palette-white);
+}
+
+.quienes-card--md .quienes-card-text {
+    color: rgba(251, 253, 255, 0.9);
 }
 
 .quienes-card-title {
@@ -2841,7 +2851,8 @@ nav a:hover,
 }
 
 .quienes-values-grid {
-    grid-template-columns: repeat(2, minmax(0, 380px));
+    /* La tarjeta de Principios es más ancha para que sus tres chips quepan en una fila. */
+    grid-template-columns: minmax(0, 320px) minmax(0, 470px);
 }
 
 .quienes-schedule-grid {
@@ -2860,7 +2871,7 @@ nav a:hover,
 .quienes-chip {
     padding: 0.4rem 0.9rem;
     border-radius: 999px;
-    background: rgba(97, 158, 214, 0.16);
+    background: rgba(251, 253, 255, 0.88);
     border: 1px solid rgba(9, 88, 139, 0.22);
     color: var(--palette-blue);
     font-size: 0.9rem;
