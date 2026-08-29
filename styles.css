@@ -488,33 +488,37 @@ h4 {
 }
 
 .home-pdf-ministries .home-pdf-collage {
-    min-height: 380px !important;
-    display: block;
-    overflow: hidden;
+    min-height: 0 !important;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(0.8rem, 1.6vw, 1.4rem);
+    align-items: center;
+    overflow: visible;
     border-radius: 0;
     position: relative;
+    padding: 12px 0;
 }
 
 .home-pdf-ministries .home-pdf-collage img {
-    max-height: 360px !important;
+    max-height: 340px !important;
+    object-fit: contain;
+}
+
+.home-pdf-ministries .home-pdf-collage-a,
+.home-pdf-ministries .home-pdf-collage-b {
+    width: 100% !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
 }
 
 .home-pdf-ministries .home-pdf-collage-a {
-    width: 78% !important;
-    position: absolute !important;
-    left: 0 !important;
-    top: -60px !important;
-    transform: rotate(-6deg);
-    z-index: 1;
+    transform: rotate(-4deg);
 }
 
 .home-pdf-ministries .home-pdf-collage-b {
-    width: 78% !important;
-    position: absolute !important;
-    right: -40px !important;
-    top: 60px !important;
-    transform: rotate(5deg);
-    z-index: 2;
+    transform: rotate(4deg);
 }
 
 .home-pdf-action-btn {
@@ -2730,8 +2734,8 @@ nav a:hover,
 .quienes-card {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(165deg, rgba(97, 158, 214, 0.26) 0%, rgba(9, 88, 139, 0.1) 100%);
-    border: 1px solid rgba(9, 88, 139, 0.22);
+    background: linear-gradient(150deg, var(--palette-blue) 0%, var(--palette-blue-deep) 100%);
+    border: 1px solid rgba(9, 88, 139, 0.35);
     border-radius: 14px;
     box-shadow: 0 10px 26px rgba(9, 88, 139, 0.08);
     transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
@@ -2767,23 +2771,13 @@ nav a:hover,
 
 .quienes-card--md {
     padding: 1.75rem 1.9rem;
-    background: linear-gradient(150deg, var(--palette-blue) 0%, var(--palette-blue-deep) 55%, var(--palette-black) 145%);
-    border-color: rgba(97, 158, 214, 0.45);
-}
-
-.quienes-card--md .quienes-card-title {
-    color: var(--palette-white);
-}
-
-.quienes-card--md .quienes-card-text {
-    color: rgba(251, 253, 255, 0.9);
 }
 
 .quienes-card-title {
     margin: 0 0 0.6rem;
     font-family: Inter, system-ui, sans-serif;
     font-weight: 700;
-    color: var(--palette-blue);
+    color: var(--palette-white);
     font-size: clamp(1.05rem, 1.6vw, 1.4rem);
 }
 
@@ -2793,7 +2787,7 @@ nav a:hover,
 
 .quienes-card-text {
     margin: 0 0 0.55rem;
-    color: #223244;
+    color: rgba(251, 253, 255, 0.9);
     font-size: clamp(0.9rem, 1.05vw, 1.02rem);
     line-height: 1.6;
 }
@@ -2804,7 +2798,7 @@ nav a:hover,
 
 .quienes-card-label {
     margin: 0.7rem 0 0.2rem;
-    color: var(--palette-blue-deep);
+    color: var(--palette-blue-light);
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.16em;
@@ -2813,6 +2807,7 @@ nav a:hover,
 
 .quienes-card-number {
     display: inline-flex;
+    border: 1px solid rgba(251, 253, 255, 0.55);
     align-items: center;
     justify-content: center;
     width: 38px;
