@@ -1529,6 +1529,9 @@ h4 {
 .person-card,
 .photo-card,
 .leader-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     background: linear-gradient(180deg, #fff, #fbfbfb);
     border-radius: 12px;
     padding: 8px;
@@ -2597,5 +2600,365 @@ nav a:hover,
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* ===== Conócenos / ¿Quiénes somos? ===== */
+.quienes-hero {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 5;
+    min-height: 320px;
+    max-height: 560px;
+    overflow: hidden;
+    background: #061325;
+}
+
+.quienes-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 35%;
+    display: block;
+}
+
+.quienes-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(6, 19, 37, 0.55) 0%, rgba(6, 19, 37, 0.35) 45%, rgba(6, 19, 37, 0.6) 100%);
+}
+
+.quienes-hero-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.25rem;
+}
+
+.quienes-hero-title {
+    margin: 0;
+    color: #fff;
+    font-family: Inter, system-ui, sans-serif;
+    font-size: clamp(2.25rem, 5.6vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    text-align: center;
+    text-shadow: 0 6px 26px rgba(0, 0, 0, 0.45);
+}
+
+.quienes-breadcrumb {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.quienes-breadcrumb-inner {
+    width: 100%;
+    padding: 0.7rem clamp(0.9rem, 4vw, 4.25rem);
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.9rem;
+}
+
+.quienes-breadcrumb a {
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.quienes-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.quienes-breadcrumb-sep {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.quienes-breadcrumb-current {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.quienes-section {
+    width: 100%;
+    background: #fff;
+    padding: clamp(1.6rem, 3.4vw, 3.4rem) clamp(0.9rem, 4vw, 4.25rem);
+}
+
+.quienes-section+.quienes-section {
+    border-top: 1px solid rgba(15, 23, 42, 0.07);
+}
+
+.quienes-section .home-pdf-subtitle {
+    font-size: clamp(1.7rem, 3.1vw, 2.6rem);
+    max-width: 34ch;
+}
+
+.quienes-intro-layout {
+    margin-top: 0.6rem;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(1.4rem, 3vw, 3rem);
+    align-items: center;
+}
+
+.quienes-intro-media img {
+    width: 100%;
+    height: clamp(260px, 30vw, 420px);
+    object-fit: cover;
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(11, 35, 64, 0.16);
+}
+
+.quienes-intro-strong {
+    margin-top: 14px;
+    font-weight: 700;
+    color: var(--brand-navy);
+    font-size: clamp(1rem, 1.3vw, 1.15rem);
+}
+
+/* Tarjetas: el modificador de tamaño define el ancho mínimo y el aire interior,
+   de acuerdo con la cantidad de contenido de cada bloque. */
+.quienes-card {
+    background: var(--surface);
+    border: 1px solid rgba(15, 23, 42, 0.07);
+    border-radius: 14px;
+    box-shadow: 0 10px 26px rgba(11, 35, 64, 0.07);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.quienes-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 34px rgba(11, 35, 64, 0.12);
+}
+
+.quienes-card--xs {
+    padding: 1.1rem 1.2rem;
+}
+
+.quienes-card--sm {
+    padding: 1.35rem 1.45rem;
+}
+
+.quienes-card--md {
+    padding: 1.75rem 1.9rem;
+}
+
+.quienes-card-title {
+    margin: 0 0 0.6rem;
+    font-family: Inter, system-ui, sans-serif;
+    font-weight: 700;
+    color: var(--brand-navy);
+    font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+}
+
+.quienes-card--md .quienes-card-title {
+    font-size: clamp(1.3rem, 2vw, 1.75rem);
+}
+
+.quienes-card-text {
+    margin: 0 0 0.55rem;
+    color: #1f2937;
+    font-size: clamp(0.9rem, 1.05vw, 1.02rem);
+    line-height: 1.6;
+}
+
+.quienes-card-text:last-child {
+    margin-bottom: 0;
+}
+
+.quienes-card-label {
+    margin: 0.7rem 0 0.2rem;
+    color: var(--brand-gold);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.quienes-card-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 0.7rem;
+    border-radius: 50%;
+    background: var(--brand-navy);
+    color: #fff;
+    font-weight: 700;
+}
+
+.quienes-vm-grid {
+    margin-top: 1.4rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.8rem);
+    align-items: start;
+}
+
+.quienes-goals-grid,
+.quienes-history-grid {
+    margin-top: 1.4rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.9rem, 1.8vw, 1.6rem);
+    align-items: start;
+}
+
+.quienes-values-grid,
+.quienes-schedule-grid {
+    margin-top: 1.4rem;
+    display: grid;
+    gap: clamp(0.9rem, 1.8vw, 1.4rem);
+    align-items: start;
+}
+
+.quienes-values-grid {
+    grid-template-columns: repeat(2, minmax(0, 380px));
+}
+
+.quienes-schedule-grid {
+    grid-template-columns: repeat(3, minmax(0, 340px));
+}
+
+.quienes-chip-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.quienes-chip {
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(13, 110, 253, 0.08);
+    border: 1px solid rgba(11, 35, 64, 0.1);
+    color: var(--brand-navy);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.quienes-values {
+    background: #f4f8fd;
+}
+
+.quienes-agenda-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.quienes-beliefs {
+    background: var(--brand-navy);
+}
+
+.quienes-beliefs .home-pdf-eyebrow,
+.quienes-beliefs .home-pdf-subtitle {
+    color: #fff;
+}
+
+.quienes-beliefs-lead {
+    margin-top: 0.4rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(1rem, 1.35vw, 1.2rem);
+    line-height: 1.7;
+    max-width: 80ch;
+}
+
+.quienes-beliefs-list {
+    margin-top: clamp(1.4rem, 2.6vw, 2.4rem);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2.2vw, 2rem);
+    align-items: start;
+}
+
+.quienes-belief {
+    padding: clamp(1.2rem, 2vw, 1.8rem);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.quienes-belief-title {
+    margin: 0 0 0.7rem;
+    font-family: Inter, system-ui, sans-serif;
+    font-weight: 700;
+    color: #fff;
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+}
+
+.quienes-belief-text {
+    margin: 0 0 0.7rem;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: clamp(0.9rem, 1.05vw, 1rem);
+    line-height: 1.65;
+}
+
+.quienes-belief-text:last-child {
+    margin-bottom: 0;
+}
+
+.quienes-beliefs-closing {
+    margin-top: clamp(1.4rem, 2.4vw, 2.2rem);
+    padding: clamp(1.1rem, 2vw, 1.6rem);
+    border-left: 4px solid var(--brand-gold);
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 0 12px 12px 0;
+    color: #fff;
+    font-size: clamp(1rem, 1.25vw, 1.15rem);
+    line-height: 1.7;
+}
+
+.quienes-actions,
+.quienes-beliefs-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width:1024px) {
+    .quienes-intro-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .quienes-goals-grid,
+    .quienes-history-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .quienes-schedule-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .quienes-beliefs-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width:767px) {
+    .quienes-hero {
+        aspect-ratio: 4 / 3;
+        min-height: 260px;
+    }
+
+    .quienes-vm-grid,
+    .quienes-goals-grid,
+    .quienes-history-grid,
+    .quienes-values-grid,
+    .quienes-schedule-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quienes-section .home-pdf-subtitle {
+        font-size: clamp(1.45rem, 6vw, 2rem);
+        max-width: none;
     }
 }

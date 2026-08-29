@@ -5,6 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Conócenos — ICC La Trinidad</title>
+    <meta name="description"
+        content="Conoce la visión, misión, objetivos, valores y proclamación de fe de la Iglesia Comunidad Cristiana La Trinidad." />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" href="media/logo-favicon.png" />
@@ -16,183 +18,316 @@
     </style>
 </head>
 
-<body class="antialiased text-gray-800">
+<body class="antialiased text-gray-800 home-bethel">
     <!-- header (same as index) -->
     <header class="brand-bg text-white home-topbar">
         <div class="max-w-6xl mx-auto flex items-center justify-between p-4 home-topbar-inner">
             <a href="index.html" class="flex items-center gap-3 home-brand-link">
-                <img src="media/BRANDING - ICC LA TRINIDAD/1.png" alt="Logo"
-                    class="h-16 w-16 object-contain rounded" />
+                <img src="media/BRANDING%20-%20ICC%20LA%20TRINIDAD/1.png" alt="Logo"
+                    class="h-14 w-14 object-contain rounded" />
                 <div>
                     <h1 class="text-xl font-semibold">Iglesia Comunidad Cristiana La Trinidad</h1>
+                    <p class="text-sm opacity-75">Adorar · Crecer · Servir</p>
                 </div>
             </a>
             <nav>
                 <ul class="hidden md:flex gap-6 items-center">
-                    <li><a class="hover:underline" href="index.html">Inicio</a></li>
-                    <li><a class="hover:underline" href="conocenos.html">Conócenos</a></li>
-                    <li><a class="hover:underline" href="eventos.html">Eventos</a></li>
-                    <li><a class="hover:underline" href="predicas.html">Prédicas</a></li>
-                    <li><a class="hover:underline" href="liderazgo.html">Liderazgo</a></li>
-                    <li><a class="hover:underline" href="grupos.html">Grupos</a></li>
-                    <li><a class="hover:underline" href="testimonios.html">Testimonios</a></li>
-                    <li><a class="hover:underline" href="diezmos.html">Diezmos</a></li>
+                    <li><a class="nav-link hover:underline" href="index.html">Inicio</a></li>
+                    <li><a class="nav-link active hover:underline" href="conocenos.html">Conócenos</a></li>
+                    <li><a class="nav-link hover:underline" href="eventos.html">Eventos</a></li>
+                    <li><a class="nav-link hover:underline" href="predicas.html">Prédicas</a></li>
+                    <li><a class="nav-link hover:underline" href="liderazgo.html">Liderazgo</a></li>
+                    <li><a class="nav-link hover:underline" href="grupos.html">Grupos</a></li>
+                    <li><a class="nav-link hover:underline" href="testimonios.html">Testimonios</a></li>
+                    <li><a class="nav-link hover:underline" href="historias.html">Historias</a></li>
+                    <li><a class="nav-link hover:underline" href="diezmos.html">Diezmos</a></li>
                 </ul>
+                <button id="menuBtn" class="md:hidden p-2 border rounded">Menú</button>
             </nav>
-            <button id="menuBtn" class="md:hidden p-2 border rounded">Menú</button>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto p-6">
-        <!-- La sección resumen 'Quiénes somos' fue movida al inicio. Aquí ampliamos con más detalle -->
-        <section class="page-hero reveal">
-            <div class="eyebrow">Comunidad y propósito</div>
-            <h2 class="text-2xl font-semibold">Nuestra Historia</h2>
-            <p class="mt-3">Fundada como comunidad de creyentes con el propósito de servir y enseñar, nuestra iglesia ha
-                crecido en número y en ministerios. Aquí profundizamos en programas, ministerios y oportunidades de
-                servicio.</p>
-            <div class="pill-row">
-                <span class="pill">Fe</span>
-                <span class="pill">Familia</span>
-                <span class="pill">Servicio</span>
+    <main class="home-main-wide">
+        <!-- Portada: reemplaza el src por la imagen definitiva de "¿Quiénes somos?" (formato panorámico, mínimo 1600x520 px) -->
+        <section class="quienes-hero">
+            <img class="quienes-hero-image" src="media/inicio-imagen1.jpeg" alt="Comunidad ICC La Trinidad" />
+            <div class="quienes-hero-overlay"></div>
+            <div class="quienes-hero-content">
+                <h2 class="quienes-hero-title">¿Quiénes somos?</h2>
             </div>
-            <h3 class="mt-6 font-semibold text-white">Áreas de Ministerio</h3>
-            <ul class="mt-2 text-sm list-disc list-inside">
-                <li>Adoración y alabanza</li>
-                <li>Discipulado y formación</li>
-                <li>Ministerios familiares y niños</li>
-            </ul>
+        </section>
+        <nav class="quienes-breadcrumb" aria-label="Ruta de navegación">
+            <div class="quienes-breadcrumb-inner">
+                <a href="index.html">Inicio</a>
+                <span class="quienes-breadcrumb-sep">&gt;</span>
+                <span class="quienes-breadcrumb-current">¿Quiénes somos?</span>
+            </div>
+        </nav>
+
+        <section class="quienes-section quienes-intro reveal">
+            <div class="quienes-intro-layout">
+                <div class="quienes-intro-copy">
+                    <p class="home-pdf-eyebrow">NOSOTROS</p>
+                    <h3 class="home-pdf-subtitle">Una familia de fe que anuncia el Reino de Dios</h3>
+                    <p class="home-pdf-text">Somos la <strong>Iglesia Comunidad Cristiana La Trinidad</strong>: una
+                        comunidad de creyentes que ama a Dios, sirve a las personas y forma discípulos. Creemos que cada
+                        persona tiene un propósito eterno y que la Palabra, sembrada en el corazón, transforma familias
+                        y ciudades enteras.</p>
+                    <p class="home-pdf-text">Nos reunimos para adorar, crecer y servir juntos, dependiendo de la guía
+                        del Espíritu Santo en cada área de nuestra vida y de nuestros ministerios.</p>
+                    <p class="quienes-intro-strong">Aquí siempre habrá un lugar para ti.</p>
+                </div>
+                <div class="quienes-intro-media">
+                    <img src="media/inicio-imagen2.jpeg" alt="Congregación reunida" />
+                </div>
+            </div>
         </section>
 
-        <section class="mt-6 leaders-section reveal">
+        <section class="quienes-section quienes-vm reveal">
+            <p class="home-pdf-eyebrow">PROPÓSITO</p>
+            <h3 class="home-pdf-subtitle">Visión y Misión</h3>
+            <div class="quienes-vm-grid">
+                <article class="quienes-card quienes-card--md">
+                    <h4 class="quienes-card-title">Visión</h4>
+                    <p class="quienes-card-text">Ser una iglesia referente a nivel mundial por su excelencia y amor,
+                        comprometida con la predicación del Evangelio y la expansión del Reino de Dios, sembrando Su
+                        Palabra en el corazón de las personas y proyectándonos cada día como una iglesia que manifiesta
+                        sanidad, libertad y proclama el año agradable del Señor.</p>
+                </article>
+                <article class="quienes-card quienes-card--md">
+                    <h4 class="quienes-card-title">Misión</h4>
+                    <p class="quienes-card-text">Predicar el Evangelio del Reino de Dios bajo la guía del Espíritu Santo
+                        y el poder sobrenatural de Su presencia, para la salvación de todo aquel que cree; bautizando y
+                        discipulando a los hijos de Dios, con el propósito de conducirlos a la estatura de Cristo.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="quienes-section quienes-goals reveal">
+            <p class="home-pdf-eyebrow">OBJETIVOS INTEGRALES</p>
+            <h3 class="home-pdf-subtitle">Lo que nos proponemos como iglesia</h3>
+            <div class="quienes-goals-grid">
+                <article class="quienes-card quienes-card--sm">
+                    <span class="quienes-card-number">1</span>
+                    <h4 class="quienes-card-title">Expandir la Evangelización</h4>
+                    <p class="quienes-card-label">Objetivo</p>
+                    <p class="quienes-card-text">Incrementar el alcance evangelístico de la iglesia en la comunidad.</p>
+                    <p class="quienes-card-label">Acciones</p>
+                    <p class="quienes-card-text">Desarrollar campañas evangelísticas, eventos de alcance comunitario y
+                        programas de testimonio personal.</p>
+                </article>
+                <article class="quienes-card quienes-card--sm">
+                    <span class="quienes-card-number">2</span>
+                    <h4 class="quienes-card-title">Fomentar el Crecimiento Espiritual</h4>
+                    <p class="quienes-card-label">Objetivo</p>
+                    <p class="quienes-card-text">Proveer formación bíblica y discipulado continuo para todos los
+                        miembros.</p>
+                    <p class="quienes-card-label">Acciones</p>
+                    <p class="quienes-card-text">Ofrecer estudios bíblicos, clases de discipulado, retiros espirituales
+                        y mentorías.</p>
+                </article>
+                <article class="quienes-card quienes-card--sm">
+                    <span class="quienes-card-number">3</span>
+                    <h4 class="quienes-card-title">Fortalecer la Unidad Familiar</h4>
+                    <p class="quienes-card-label">Objetivo</p>
+                    <p class="quienes-card-text">Promover valores cristianos y la unidad en las familias de la iglesia.
+                    </p>
+                    <p class="quienes-card-label">Acciones</p>
+                    <p class="quienes-card-text">Organizar talleres y seminarios sobre relaciones familiares,
+                        actividades familiares y grupos de apoyo.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="quienes-section quienes-values reveal">
+            <p class="home-pdf-eyebrow">NUESTRO CARÁCTER</p>
+            <h3 class="home-pdf-subtitle">Valores y Principios</h3>
+            <div class="quienes-values-grid">
+                <article class="quienes-card quienes-card--xs">
+                    <h4 class="quienes-card-title">Valores</h4>
+                    <ul class="quienes-chip-list">
+                        <li class="quienes-chip">Fe</li>
+                        <li class="quienes-chip">Amor</li>
+                        <li class="quienes-chip">Humildad</li>
+                    </ul>
+                </article>
+                <article class="quienes-card quienes-card--xs">
+                    <h4 class="quienes-card-title">Principios</h4>
+                    <ul class="quienes-chip-list">
+                        <li class="quienes-chip">Excelencia</li>
+                        <li class="quienes-chip">Compromiso</li>
+                        <li class="quienes-chip">Compañerismo</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="quienes-section quienes-history reveal">
+            <p class="home-pdf-eyebrow">NUESTRA HISTORIA</p>
+            <h3 class="home-pdf-subtitle">Una historia de fidelidad de Dios</h3>
+            <p class="home-pdf-text">Fundada como comunidad de creyentes con el propósito de servir y enseñar, nuestra
+                iglesia ha crecido en número y en ministerios. Hoy seguimos edificando familias, formando discípulos y
+                acompañando a cada persona en su camino con Cristo.</p>
+            <div class="quienes-history-grid">
+                <article class="quienes-card quienes-card--sm">
+                    <h4 class="quienes-card-title">Adoración y alabanza</h4>
+                    <p class="quienes-card-text">Un equipo que guía a la congregación a la presencia de Dios en cada
+                        reunión.</p>
+                </article>
+                <article class="quienes-card quienes-card--sm">
+                    <h4 class="quienes-card-title">Discipulado y formación</h4>
+                    <p class="quienes-card-text">Estudios bíblicos, clases y mentorías para crecer hacia la estatura de
+                        Cristo.</p>
+                </article>
+                <article class="quienes-card quienes-card--sm">
+                    <h4 class="quienes-card-title">Familias y niños</h4>
+                    <p class="quienes-card-text">Espacios para fortalecer el hogar y sembrar la Palabra en las nuevas
+                        generaciones.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="quienes-section leaders-section reveal">
             <div class="leaders-header">
-                <h3 class="text-xl font-semibold section-title">Conoce a nuestros líderes</h3>
-                <p class="text-sm text-muted">Haz clic sobre cada imagen para ver más información.</p>
+                <p class="home-pdf-eyebrow">LIDERAZGO</p>
+                <h3 class="home-pdf-subtitle">Conoce a nuestros líderes</h3>
+                <p class="home-pdf-text">Un equipo pastoral que sirve, enseña y acompaña a la congregación.</p>
             </div>
             <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 leaders-grid">
-                <button class="leader-card" data-name="Pastor Jhon" data-role="Pastor Principal"
-                    data-bio="Apasionado por enseñar y pastorear la iglesia."><img class="person-photo rounded"
+                <a class="leader-card" href="liderazgo.html"><img class="person-photo rounded"
                         src="media/inicio-imagen1.jpeg" alt="Pastor Jhon" />
                     <div class="mt-2"><strong>Pastor Jhon</strong>
                         <div class="text-sm text-gray-600">Pastor Principal</div>
                     </div>
-                </button>
-                <button class="leader-card" data-name="Pastora Katie" data-role="Pastora"
-                    data-bio="Líder de ministerios familiares, enfoca en las familias y los niños."><img
-                        class="person-photo rounded" src="media/inicio-imagen2.jpeg"
-                        alt="Pastora Katie" />
+                </a>
+                <a class="leader-card" href="liderazgo.html"><img class="person-photo rounded"
+                        src="media/inicio-imagen2.jpeg" alt="Pastora Katie" />
                     <div class="mt-2"><strong>Pastora Katie</strong>
                         <div class="text-sm text-gray-600">Pastora</div>
                     </div>
-                </button>
-                <button class="leader-card" data-name="Harold" data-role="Servidor"
-                    data-bio="Responsable de logística y servicio en los encuentros."><img class="person-photo rounded"
+                </a>
+                <a class="leader-card" href="liderazgo.html"><img class="person-photo rounded"
                         src="media/inicio-imagen3.jpeg" alt="Harold" />
                     <div class="mt-2"><strong>Harold</strong>
                         <div class="text-sm text-gray-600">Servidor</div>
                     </div>
-                </button>
-                <button class="leader-card" data-name="Maria" data-role="Servidora"
-                    data-bio="Encargada de ministerios de apoyo y discipulado."><img class="person-photo rounded"
+                </a>
+                <a class="leader-card" href="liderazgo.html"><img class="person-photo rounded"
                         src="media/inicio-imagen5.jpeg" alt="Maria" />
                     <div class="mt-2"><strong>Maria</strong>
                         <div class="text-sm text-gray-600">Servidora</div>
                     </div>
-                </button>
+                </a>
+            </div>
+            <div class="quienes-actions">
+                <a href="liderazgo.html" class="home-hero-btn home-hero-btn-secondary home-pdf-action-btn">Ver
+                    liderazgo <span>→</span></a>
+            </div>
+        </section>
+
+        <section class="quienes-section quienes-schedule reveal">
+            <p class="home-pdf-eyebrow">HORARIOS Y SEDES</p>
+            <h3 class="home-pdf-subtitle">Cuándo nos reunimos</h3>
+            <div class="quienes-schedule-grid">
+                <article class="quienes-card quienes-card--xs">
+                    <h4 class="quienes-card-title">Servicio Dominical</h4>
+                    <p class="quienes-card-text">Domingo: 7:00 AM • 10:00 AM</p>
+                    <p class="quienes-card-text">Lugar: CLL 81 # 18D-21</p>
+                </article>
+                <article class="quienes-card quienes-card--xs">
+                    <h4 class="quienes-card-title">Encuentros Jóvenes</h4>
+                    <p class="quienes-card-text">Sábados: 6:30 PM</p>
+                    <p class="quienes-card-text">Lugar: Salón principal</p>
+                </article>
+                <article class="quienes-card quienes-card--xs">
+                    <h4 class="quienes-card-title">Reunión de Oración</h4>
+                    <p class="quienes-card-text">Miércoles: 7:00 PM</p>
+                    <p class="quienes-card-text">Lugar: Capilla</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Proclamación de fe (última sección, al estilo de "Statement of Faith") -->
+        <section id="creemos" class="quienes-section quienes-beliefs reveal">
+            <p class="home-pdf-eyebrow">LO QUE CREEMOS</p>
+            <h3 class="home-pdf-subtitle">Proclamación de fe</h3>
+            <p class="quienes-beliefs-lead">Como iglesia, creemos en un solo Dios verdadero, eterno y soberano, quien
+                existe eternamente en tres personas: Padre, Hijo y Espíritu Santo. Creemos que todo cuanto existe fue
+                creado, formado y sostenido por Él, y que toda la creación encuentra en Dios su origen, propósito y
+                razón de ser.</p>
+
+            <div class="quienes-beliefs-list">
+                <article class="quienes-belief">
+                    <h4 class="quienes-belief-title">Creemos en Dios Padre</h4>
+                    <p class="quienes-belief-text">Creemos en Dios Padre, fuente de todo lo bueno y perfecto, Creador de
+                        todas las cosas y dador de la vida. Él es santo, justo, amoroso, fiel e inmutable. Su carácter
+                        permanece firme y constante, y sus acciones están fundamentadas en su perfecta voluntad.</p>
+                    <p class="quienes-belief-text">Creemos que el Padre, en su amor por la humanidad, estableció desde
+                        la eternidad su propósito de salvación y manifestó ese amor al entregar a su Hijo por nuestros
+                        pecados.</p>
+                </article>
+
+                <article class="quienes-belief">
+                    <h4 class="quienes-belief-title">Creemos en Jesucristo, el Hijo de Dios</h4>
+                    <p class="quienes-belief-text">Creemos en Jesucristo, el Hijo eterno de Dios, plenamente Dios y
+                        plenamente hombre. Creemos que su existencia no comenzó con su nacimiento en la tierra, sino que
+                        Él es eterno y comparte plenamente la naturaleza divina.</p>
+                    <p class="quienes-belief-text">Creemos que Dios se manifestó en carne por medio de Jesucristo y que
+                        en Él se manifestó la gloria de Dios, lleno de gracia y de verdad. Su venida a este mundo reveló
+                        de manera perfecta el amor del Padre hacia la humanidad.</p>
+                    <p class="quienes-belief-text">Creemos que Jesucristo murió voluntariamente por nuestros pecados,
+                        que resucitó y que por medio de Él recibimos salvación. Creemos que somos salvos por gracia
+                        mediante la fe en Jesucristo, no por nuestros propios méritos, sino por el regalo inmerecido de
+                        Dios.</p>
+                </article>
+
+                <article class="quienes-belief">
+                    <h4 class="quienes-belief-title">Creemos en el Espíritu Santo</h4>
+                    <p class="quienes-belief-text">Creemos en el Espíritu Santo, tercera persona de la Trinidad,
+                        plenamente Dios y digno del mismo honor, adoración y reverencia que el Padre y el Hijo.</p>
+                    <p class="quienes-belief-text">Creemos que el Espíritu Santo no es simplemente una fuerza o
+                        influencia, sino Dios mismo presente y obrando en medio de su pueblo y en la vida del creyente.
+                        Él habita en nosotros, nos guía, enseña, corrige, consuela, transforma nuestro carácter y nos
+                        capacita para cumplir el propósito de Dios.</p>
+                    <p class="quienes-belief-text">Reconocemos su autoridad y dependencia de su dirección en nuestra
+                        vida, nuestras decisiones, nuestro servicio y nuestra misión como iglesia. Creemos que su
+                        presencia es indispensable para vivir conforme a la voluntad de Dios y experimentar el poder
+                        sobrenatural de su obra.</p>
+                </article>
+
+                <article class="quienes-belief">
+                    <h4 class="quienes-belief-title">Creemos en la Palabra de Dios</h4>
+                    <p class="quienes-belief-text">Creemos que la Escritura es la Palabra de Dios, inspirada por Él y
+                        fundamento de nuestra fe, doctrina, conducta y vida cristiana. En ella Dios se revela al ser
+                        humano y nos permite conocer su voluntad, su carácter y su propósito.</p>
+                    <p class="quienes-belief-text">Por esta razón, como iglesia procuramos vivir y enseñar conforme a la
+                        verdad de la Palabra de Dios, sometiendo nuestra fe, nuestras decisiones y nuestra práctica a
+                        ella.</p>
+                </article>
+
+                <article class="quienes-belief">
+                    <h4 class="quienes-belief-title">Creemos en la Iglesia y su misión</h4>
+                    <p class="quienes-belief-text">Creemos que la Iglesia es el cuerpo de Cristo, llamada a anunciar el
+                        Evangelio del Reino de Dios, hacer discípulos, bautizar a quienes creen y conducir a cada
+                        creyente hacia la madurez espiritual y la estatura de Cristo.</p>
+                    <p class="quienes-belief-text">Creemos que la Iglesia ha sido llamada a manifestar el amor de Dios,
+                        anunciar salvación, proclamar libertad y participar activamente en la expansión del Reino de
+                        Dios bajo la dirección y el poder del Espíritu Santo.</p>
+                </article>
+            </div>
+
+            <p class="quienes-beliefs-closing">Esta es nuestra fe: un solo Dios, Padre, Hijo y Espíritu Santo; una
+                salvación por gracia mediante la fe en Jesucristo; una vida guiada por el Espíritu Santo; y una Iglesia
+                comprometida con la verdad de la Palabra y con la expansión del Reino de Dios.</p>
+
+            <div class="quienes-beliefs-actions">
+                <a href="index.html#contacto" class="home-hero-btn home-hero-btn-primary home-pdf-action-btn">Contáctanos
+                    <span>→</span></a>
+                <a href="predicas.html" class="home-hero-btn home-hero-btn-secondary home-pdf-action-btn">Ver prédicas
+                    <span>→</span></a>
             </div>
         </section>
     </main>
-
-    <section class="mt-6 card reveal">
-        <h3 class="text-xl font-semibold section-title">Horarios y Sedes</h3>
-        <div class="mt-4 grid md:grid-cols-3 gap-4">
-            <div class="p-4 border rounded">
-                <h4 class="font-semibold">Servicio Dominical</h4>
-                <p class="mt-1 text-sm">Domingo: 7:00 AM • 10:00 AM</p>
-                <p class="mt-2 text-sm">Lugar: CLL 81 # 18D-21</p>
-            </div>
-            <div class="p-4 border rounded">
-                <h4 class="font-semibold">Encuentros Jóvenes</h4>
-                <p class="mt-1 text-sm">Sábados: 6:30 PM</p>
-                <p class="mt-2 text-sm">Lugar: Salón principal</p>
-            </div>
-            <div class="p-4 border rounded">
-                <h4 class="font-semibold">Reunión de Oración</h4>
-                <p class="mt-1 text-sm">Miércoles: 7:00 PM</p>
-                <p class="mt-2 text-sm">Lugar: Capilla</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="mt-6 card reveal">
-        <h3 class="text-xl font-semibold section-title">Si eres nuevo</h3>
-        <p class="mt-2 text-sm">Guía rápida para tu primera visita y pasos recomendados.</p>
-        <div class="mt-3 flex gap-3 flex-wrap">
-            <a href="#contacto" class="btn-primary">Contáctanos</a>
-            <a href="diezmos.html" class="btn-secondary">Dar</a>
-            <a href="predicas.html" class="btn-secondary">Ver prédicas</a>
-        </div>
-    </section>
-
-    <section class="mt-6 card reveal">
-        <h3 class="text-xl font-semibold section-title">Nuestro impacto</h3>
-        <div class="mt-4 grid grid-cols-3 gap-4 text-center">
-            <div>
-                <div class="text-3xl font-bold brand-accent">1,200+</div>
-                <div class="text-sm text-muted">Personas en grupos</div>
-            </div>
-            <div>
-                <div class="text-3xl font-bold brand-accent">350</div>
-                <div class="text-sm text-muted">Voluntarios activos</div>
-            </div>
-            <div>
-                <div class="text-3xl font-bold brand-accent">5</div>
-                <div class="text-sm text-muted">Programas activos</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="mt-6 card reveal">
-        <h3 class="text-xl font-semibold section-title">Suscríbete al boletín</h3>
-        <form class="newsletter-form mt-3" action="#" method="post">
-            <div class="flex gap-2">
-                <input type="email" name="email" required placeholder="Tu correo electrónico" class="p-2 flex-1" />
-                <button class="btn-primary" type="submit">Suscribirme</button>
-            </div>
-        </form>
-    </section>
-
-    <section id="agenda" class="mt-6 card reveal">
-        <div class="flex items-center justify-between gap-3 flex-wrap">
-            <h3 class="text-xl font-semibold section-title">Agenda próxima</h3>
-            <button id="agendaAdminToggle" class="btn-secondary" type="button">Editar agenda</button>
-        </div>
-        <div id="agendaSyncStatus" class="text-sm text-muted mt-2">Cargando agenda compartida...</div>
-        <div id="agendaList" class="mt-3 grid gap-3"></div>
-
-        <div id="agendaAdminPanel" class="hidden mt-4 border rounded p-4 bg-white/70">
-            <div class="text-sm text-muted mb-3">Modo pastoral activo. Solo puedes actualizar la fecha y hora de cada evento.</div>
-            <div class="mt-2">
-                <h4 class="font-semibold">Actualizar fechas de la agenda</h4>
-                <form id="agendaDatesForm" class="mt-3">
-                    <div id="agendaDatesList" class="grid gap-2"></div>
-                    <div class="mt-3 flex gap-2">
-                        <button class="btn-primary" type="submit">Guardar fechas</button>
-                        <button id="agendaDatesReset" class="btn-secondary" type="button">Restablecer</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <section id="testimonials" class="mt-6 card reveal">
-        <h3 class="text-xl font-semibold section-title">Testimonios</h3>
-        <div id="testiContainer" class="mt-3 testi-card"></div>
-        <div class="mt-3 flex gap-2">
-            <button id="prevTesti" class="btn-secondary">Anterior</button>
-            <button id="nextTesti" class="btn-secondary">Siguiente</button>
-        </div>
-    </section>
 
     <footer class="site-footer">
         <div class="max-w-6xl mx-auto text-center">
@@ -222,15 +357,15 @@
                             d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.336 3.608 1.311.975.975 1.249 2.242 1.311 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.336 2.633-1.311 3.608-.975.975-2.242 1.249-3.608 1.311-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.336-3.608-1.311-.975-.975-1.249-2.242-1.311-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.336-2.633 1.311-3.608.975-.975 2.242-1.249 3.608-1.311C8.416 2.175 8.796 2.163 12 2.163zm0 1.802c-3.148 0-3.521.012-4.763.069-1.151.052-1.776.245-2.192.407-.551.215-.944.472-1.357.885-.413.413-.67.806-.885 1.357-.162.416-.355 1.041-.407 2.192-.057 1.242-.069 1.615-.069 4.763s.012 3.521.069 4.763c.052 1.151.245 1.776.407 2.192.215.551.472.944.885 1.357.413.413.806.67 1.357.885.416.162 1.041.355 2.192.407 1.242.057 1.615.069 4.763.069s3.521-.012 4.763-.069c1.151-.052 1.776-.245 2.192-.407.551-.215.944-.472 1.357-.885.413-.413.67-.806.885-1.357.162-.416.355-1.041.407-2.192.057-1.242.069-1.615.069-4.763s-.012-3.521-.069-4.763c-.052-1.151-.245-1.776-.407-2.192-.215-.551-.472-.944-.885-1.357-.413-.413-.806-.67-1.357-.885-.416-.162-1.041-.355-2.192-.407-1.242-.057-1.615-.069-4.763-.069zm0 2.474a5.561 5.561 0 100 11.122 5.561 5.561 0 000-11.122zm0 9.167a3.606 3.606 0 110-7.212 3.606 3.606 0 010 7.212zm7.097-9.393a1.3 1.3 0 11-2.6 0 1.3 1.3 0 012.6 0z" />
                     </svg>
                 </a>
-                <a class="social-btn" href="https://youtube.com/@icc.latrinidad" aria-label="youtube"
-                    title="YouTube" style="margin-left:8px">
+                <a class="social-btn" href="https://youtube.com/@icc.latrinidad" aria-label="youtube" title="YouTube"
+                    style="margin-left:8px">
                     <svg viewBox="0 0 24 24" fill="#FF0000" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.87.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                     </svg>
                 </a>
-                <a class="social-btn" href="https://www.tiktok.com/@icc.latrinidad" aria-label="tiktok"
-                    title="TikTok" style="margin-left:8px">
+                <a class="social-btn" href="https://www.tiktok.com/@icc.latrinidad" aria-label="tiktok" title="TikTok"
+                    style="margin-left:8px">
                     <svg viewBox="0 0 24 24" fill="#000000" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 1 1-1.84-2.48V9.77a5.72 5.72 0 1 0 4.93 5.66V8.99a7.3 7.3 0 0 0 4.28 1.38V7.28a4.28 4.28 0 0 1-3.22-1.46z" />
@@ -239,23 +374,6 @@
             </div>
         </div>
     </footer>
-
-    <div id="leaderModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded shadow max-w-lg w-full p-6">
-            <button id="closeModal" class="float-right">Cerrar</button>
-            <h4 id="modalName" class="text-xl font-semibold"></h4>
-            <div id="modalRole" class="text-sm text-gray-600"></div>
-            <p id="modalBio" class="mt-4 text-sm"></p>
-        </div>
-    </div>
-
-        <div id="imageModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center p-4">
-            <div class="img-frame bg-white rounded shadow">
-                <button class="close-image-modal float-right p-2">Cerrar</button>
-                <img src="" alt="" />
-                <div class="img-caption"></div>
-            </div>
-        </div>
 
     <script src="scripts.js"></script>
 </body>
