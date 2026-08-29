@@ -7,6 +7,12 @@
     --muted: #6b7280;
     --surface: #fbfdff;
     --page-bg: #fbfdff;
+    /* Paleta oficial ICC La Trinidad */
+    --palette-black: #000000;
+    --palette-blue: #09588b;
+    --palette-blue-deep: #195780;
+    --palette-blue-light: #619ed6;
+    --palette-white: #fbfdff;
 }
 
 html,
@@ -2611,7 +2617,7 @@ nav a:hover,
     min-height: 320px;
     max-height: 560px;
     overflow: hidden;
-    background: #061325;
+    background: var(--palette-black);
 }
 
 .quienes-hero-image {
@@ -2625,7 +2631,8 @@ nav a:hover,
 .quienes-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(6, 19, 37, 0.55) 0%, rgba(6, 19, 37, 0.35) 45%, rgba(6, 19, 37, 0.6) 100%);
+    background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(25, 87, 128, 0.35) 45%, rgba(9, 88, 139, 0.72) 100%);
 }
 
 .quienes-hero-content {
@@ -2649,8 +2656,8 @@ nav a:hover,
 }
 
 .quienes-breadcrumb {
-    background: #0d6efd;
-    color: #fff;
+    background: linear-gradient(90deg, var(--palette-blue) 0%, var(--palette-blue-deep) 55%, var(--palette-blue-light) 100%);
+    color: var(--palette-white);
 }
 
 .quienes-breadcrumb-inner {
@@ -2682,12 +2689,12 @@ nav a:hover,
 
 .quienes-section {
     width: 100%;
-    background: #fff;
+    background: var(--palette-white);
     padding: clamp(1.6rem, 3.4vw, 3.4rem) clamp(0.9rem, 4vw, 4.25rem);
 }
 
 .quienes-section+.quienes-section {
-    border-top: 1px solid rgba(15, 23, 42, 0.07);
+    border-top: 1px solid rgba(9, 88, 139, 0.12);
 }
 
 .quienes-section .home-pdf-subtitle {
@@ -2708,29 +2715,46 @@ nav a:hover,
     height: clamp(260px, 30vw, 420px);
     object-fit: cover;
     border-radius: 14px;
-    box-shadow: 0 18px 40px rgba(11, 35, 64, 0.16);
+    box-shadow: 0 18px 40px rgba(9, 88, 139, 0.28);
 }
 
 .quienes-intro-strong {
     margin-top: 14px;
     font-weight: 700;
-    color: var(--brand-navy);
+    color: var(--palette-blue);
     font-size: clamp(1rem, 1.3vw, 1.15rem);
 }
 
 /* Tarjetas: el modificador de tamaño define el ancho mínimo y el aire interior,
    de acuerdo con la cantidad de contenido de cada bloque. */
 .quienes-card {
-    background: var(--surface);
-    border: 1px solid rgba(15, 23, 42, 0.07);
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #fff 0%, var(--palette-white) 100%);
+    border: 1px solid rgba(97, 158, 214, 0.35);
     border-radius: 14px;
-    box-shadow: 0 10px 26px rgba(11, 35, 64, 0.07);
-    transition: transform .25s ease, box-shadow .25s ease;
+    box-shadow: 0 10px 26px rgba(9, 88, 139, 0.08);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.quienes-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--palette-blue) 0%, var(--palette-blue-light) 100%);
+    opacity: 0;
+    transition: opacity .25s ease;
 }
 
 .quienes-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 16px 34px rgba(11, 35, 64, 0.12);
+    border-color: var(--palette-blue-light);
+    box-shadow: 0 18px 38px rgba(9, 88, 139, 0.18);
+}
+
+.quienes-card:hover::before {
+    opacity: 1;
 }
 
 .quienes-card--xs {
@@ -2749,7 +2773,7 @@ nav a:hover,
     margin: 0 0 0.6rem;
     font-family: Inter, system-ui, sans-serif;
     font-weight: 700;
-    color: var(--brand-navy);
+    color: var(--palette-blue);
     font-size: clamp(1.05rem, 1.6vw, 1.4rem);
 }
 
@@ -2759,7 +2783,7 @@ nav a:hover,
 
 .quienes-card-text {
     margin: 0 0 0.55rem;
-    color: #1f2937;
+    color: #223244;
     font-size: clamp(0.9rem, 1.05vw, 1.02rem);
     line-height: 1.6;
 }
@@ -2770,7 +2794,7 @@ nav a:hover,
 
 .quienes-card-label {
     margin: 0.7rem 0 0.2rem;
-    color: var(--brand-gold);
+    color: var(--palette-blue-deep);
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.16em;
@@ -2785,9 +2809,10 @@ nav a:hover,
     height: 38px;
     margin-bottom: 0.7rem;
     border-radius: 50%;
-    background: var(--brand-navy);
-    color: #fff;
+    background: linear-gradient(135deg, var(--palette-blue) 0%, var(--palette-blue-light) 100%);
+    color: var(--palette-white);
     font-weight: 700;
+    box-shadow: 0 8px 18px rgba(9, 88, 139, 0.28);
 }
 
 .quienes-vm-grid {
@@ -2835,15 +2860,15 @@ nav a:hover,
 .quienes-chip {
     padding: 0.4rem 0.9rem;
     border-radius: 999px;
-    background: rgba(13, 110, 253, 0.08);
-    border: 1px solid rgba(11, 35, 64, 0.1);
-    color: var(--brand-navy);
+    background: rgba(97, 158, 214, 0.16);
+    border: 1px solid rgba(9, 88, 139, 0.22);
+    color: var(--palette-blue);
     font-size: 0.9rem;
     font-weight: 600;
 }
 
 .quienes-values {
-    background: #f4f8fd;
+    background: linear-gradient(180deg, rgba(97, 158, 214, 0.14) 0%, var(--palette-white) 100%);
 }
 
 .quienes-agenda-head {
@@ -2855,7 +2880,9 @@ nav a:hover,
 }
 
 .quienes-beliefs {
-    background: var(--brand-navy);
+    background:
+        radial-gradient(circle at 85% 8%, rgba(97, 158, 214, 0.3) 0%, rgba(97, 158, 214, 0) 45%),
+        linear-gradient(180deg, var(--palette-blue-deep) 0%, var(--palette-blue) 55%, var(--palette-black) 100%);
 }
 
 .quienes-beliefs .home-pdf-eyebrow,
@@ -2882,8 +2909,14 @@ nav a:hover,
 .quienes-belief {
     padding: clamp(1.2rem, 2vw, 1.8rem);
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(251, 253, 255, 0.07);
+    border: 1px solid rgba(97, 158, 214, 0.35);
+    transition: border-color .25s ease, background .25s ease;
+}
+
+.quienes-belief:hover {
+    background: rgba(251, 253, 255, 0.11);
+    border-color: var(--palette-blue-light);
 }
 
 .quienes-belief-title {
@@ -2908,8 +2941,8 @@ nav a:hover,
 .quienes-beliefs-closing {
     margin-top: clamp(1.4rem, 2.4vw, 2.2rem);
     padding: clamp(1.1rem, 2vw, 1.6rem);
-    border-left: 4px solid var(--brand-gold);
-    background: rgba(255, 255, 255, 0.08);
+    border-left: 4px solid var(--palette-blue-light);
+    background: rgba(251, 253, 255, 0.1);
     border-radius: 0 12px 12px 0;
     color: #fff;
     font-size: clamp(1rem, 1.25vw, 1.15rem);
