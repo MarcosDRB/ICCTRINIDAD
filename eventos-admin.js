@@ -64,17 +64,18 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'Todo el día';
     }
 
-    function safeImageData(value) {
-        return typeof value === 'string' && /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(value)
-            ? value
-            : '';
+    function safeImageSource(value) {
+        if (typeof value !== 'string') return '';
+        if (/^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(value)) return value;
+        if (value.startsWith('media/') && !value.split('/').includes('..')) return value;
+        return '';
     }
 
     function renderEvent(event) {
         const theme = allowedThemes.has(event.theme) ? event.theme : 'default';
-        const image = safeImageData(event.image);
+        const image = safeImageSource(event.image);
         const poster = image
-            ? `<div class="quienes-event-poster quienes-event-poster--image"><img class="quienes-event-poster-image" src="${image}" alt="Afiche de ${escapeHtml(event.title)}" /></div>`
+            ? `<div class="quienes-event-poster quienes-event-poster--image"><img class="quienes-event-poster-image" src="${escapeHtml(image)}" alt="Afiche de ${escapeHtml(event.title)}" /></div>`
             : `<div class="quienes-event-poster quienes-event-poster--${theme}">
                     <p class="quienes-event-poster-label">${escapeHtml(event.posterLabel || 'Evento ICC')}</p>
                     <h4 class="quienes-event-poster-title">${escapeHtml(event.title)}</h4>
@@ -131,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         editorImage.value = '';
         removeImage.checked = false;
         newImageData = '';
-        const image = safeImageData(event.image);
+        const image = safeImageSource(event.image);
         imagePreview.src = image;
         imagePreview.hidden = !image;
         setEditorError('');
@@ -140,15 +141,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadEvents() {
+        let eventsLoaded = false;
+
         try {
-            const response = await fetch('/api/agenda/events');
-            if (!response.ok) throw new Error('No fue posible cargar los eventos.');
+            const response = await fetch('agenda.json');
+            if (!response.ok) throw new Error('No fue posible cargar la agenda.');
             const data = await response.json();
             events = Array.isArray(data.events) ? data.events : [];
             renderEvents();
-            if (!events.length) eventsGrid.innerHTML = '<p class="event-admin-error">No hay eventos publicados.</p>';
+            eventsLoaded = true;
         } catch (error) {
+            events = [];
+        }
+
+        try {
+            const response = await fetch('/api/agenda/events');
+            if (!response.ok) throw new Error('No hay una API de agenda disponible.');
+            const data = await response.json();
+            events = Array.isArray(data.events) ? data.events : [];
+            renderEvents();
+            eventsLoaded = true;
+            return;
+        } catch (error) {
+            const adminActions = document.querySelector('.event-admin-actions');
+            if (adminActions) adminActions.hidden = true;
+            adminPanel.hidden = true;
+        }
+
+        if (!eventsLoaded) {
             eventsGrid.innerHTML = '<p class="event-admin-error">No se pudieron cargar los eventos. Revisa la conexión e inténtalo de nuevo.</p>';
+        } else if (!events.length) {
+            eventsGrid.innerHTML = '<p class="event-admin-error">No hay eventos publicados.</p>';
         }
     }
 

@@ -3232,6 +3232,10 @@ nav a:hover,
     margin-top: 1.5rem;
 }
 
+.event-admin-actions[hidden] {
+    display: none;
+}
+
 .event-admin-trigger:hover,
 .quienes-event-edit:hover {
     background: var(--palette-blue-deep);

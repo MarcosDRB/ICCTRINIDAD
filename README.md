@@ -22,13 +22,13 @@ Abre en navegador:
 
 - http://localhost:3000/conocenos.html
 
-## Clave pastoral
+## Edición local
 
-Por defecto, la clave de edición es:
+Al ejecutar el servidor Node local, la clave predeterminada para el editor es:
 
 - `TRINIDAD2026`
 
-Para cambiarla en producción:
+Para cambiarla localmente:
 
 ```bash
 set AGENDA_ADMIN_PASSWORD=TU_CLAVE_SEGURA
@@ -37,9 +37,9 @@ npm.cmd start
 
 ## Cómo funciona la agenda
 
-- Público: consume `GET /api/agenda/events`.
-- Pastor: usa `Editar agenda` y solo actualiza fechas/horas (no cambia títulos ni lugares).
-- Todos los visitantes ven los cambios al recargar la página.
+- GitHub Pages carga los eventos directamente desde `agenda.json`.
+- El formulario de administración funciona solo con el servidor Node local.
+- Para publicar cambios en GitHub Pages, edita `agenda.json` y sube el cambio a la rama `main`.
 
 ## Archivo de datos
 
@@ -49,21 +49,8 @@ La agenda se guarda en:
 
 Haz backup de ese archivo si quieres conservar histórico.
 
-## Publicar para que todos lo vean (Render)
+## Publicar con GitHub Pages
 
-1. En Render crea un `Web Service` conectando este repo de GitHub.
-2. Render detectara `render.yaml` automaticamente.
-3. En `Environment` define una clave segura en:
-	- `AGENDA_ADMIN_PASSWORD`
-4. Despliega y abre la URL publica que te entrega Render.
+El sitio se sirve desde la rama `main` y la carpeta raiz del repositorio. Cada `push` actualiza las paginas y los archivos de `media/`.
 
-Configuracion incluida para produccion:
-
-- Start command: `npm start`
-
-Nota sobre Render Free:
-
-- El plan free no permite disco persistente.
-- La agenda se guarda en almacenamiento temporal del servicio.
-- Si el servicio se reinicia/redeploya, los cambios pueden reiniciarse.
-- Para persistencia real, usa un plan con disco o conecta una base de datos.
+GitHub Pages es estático: la agenda pública se lee de `agenda.json` y el panel de edición no se ofrece en esa publicación. Para cambiar los eventos publicados, actualiza `agenda.json` y sube el cambio a GitHub.
