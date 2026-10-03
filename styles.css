@@ -3236,6 +3236,26 @@ nav a:hover,
     display: none;
 }
 
+.site-footer .event-admin-actions--footer {
+    justify-content: center;
+    margin-top: 0.45rem;
+}
+
+.site-footer .event-admin-trigger--footer {
+    min-height: 30px;
+    padding: 0.25rem 0.55rem;
+    border-color: rgba(255, 255, 255, 0.18);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.72rem;
+    font-weight: 500;
+}
+
+.site-footer .event-admin-trigger--footer:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
 .event-admin-trigger:hover,
 .quienes-event-edit:hover {
     background: var(--palette-blue-deep);
@@ -3256,6 +3276,12 @@ nav a:hover,
     border-radius: 10px;
     background: #f4f9fd;
     box-shadow: 0 12px 30px rgba(9, 88, 139, 0.12);
+}
+
+.site-footer .event-admin-panel {
+    margin-inline: auto;
+    color: #25394c;
+    text-align: left;
 }
 
 .event-admin-panel h4,

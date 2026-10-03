@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const staticAdminPassword = 'TRINIDAD2026';
     const eventsGrid = document.getElementById('eventsGrid');
     const openAdminButton = document.getElementById('openEventAdmin');
     const adminPanel = document.getElementById('eventAdminPanel');
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const allowedThemes = new Set(['kids', 'seminar', 'leaders', 'volunteers', 'baby', 'luminacion']);
     let events = [];
+    let agendaApiAvailable = false;
     let adminPassword = '';
     let editingEventId = '';
     let newImageData = '';
@@ -103,6 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
         eventsGrid.innerHTML = events.map(renderEvent).join('');
     }
 
+    function downloadAgenda() {
+        const agendaFile = new Blob([JSON.stringify({ events }, null, 2)], { type: 'application/json' });
+        const downloadUrl = URL.createObjectURL(agendaFile);
+        const downloadLink = document.createElement('a');
+        downloadLink.href = downloadUrl;
+        downloadLink.download = 'agenda.json';
+        downloadLink.click();
+        URL.revokeObjectURL(downloadUrl);
+    }
+
     function setAdminError(message) {
         adminError.textContent = message;
         adminError.hidden = !message;
@@ -155,17 +167,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch('/api/agenda/events');
+            const apiUrl = new URL('api/agenda/events', window.location.href);
+            const response = await fetch(apiUrl);
             if (!response.ok) throw new Error('No hay una API de agenda disponible.');
             const data = await response.json();
             events = Array.isArray(data.events) ? data.events : [];
             renderEvents();
             eventsLoaded = true;
+            agendaApiAvailable = true;
             return;
         } catch (error) {
-            const adminActions = document.querySelector('.event-admin-actions');
-            if (adminActions) adminActions.hidden = true;
-            adminPanel.hidden = true;
+            agendaApiAvailable = false;
         }
 
         if (!eventsLoaded) {
@@ -198,17 +210,25 @@ document.addEventListener('DOMContentLoaded', () => {
         setAdminError('');
         const password = adminPasswordInput.value;
         try {
-            const response = await fetch('/api/agenda/verify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password })
-            });
-            if (!response.ok) throw new Error('La clave no es correcta.');
+            if (agendaApiAvailable) {
+                const verifyUrl = new URL('api/agenda/verify', window.location.href);
+                const response = await fetch(verifyUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                if (!response.ok) throw new Error('La clave no es correcta.');
+            } else if (password !== staticAdminPassword) {
+                throw new Error('La clave no es correcta.');
+            }
+
             adminPassword = password;
             adminPasswordInput.value = '';
             adminLogin.hidden = true;
             adminAuthenticated.hidden = false;
-            adminStatus.textContent = 'Modo de edición activado. Puedes editar cada tarjeta.';
+            adminStatus.textContent = agendaApiAvailable
+                ? 'Modo de edición activado. Puedes editar cada tarjeta.'
+                : 'Modo de edición activado. Al guardar se descargará agenda.json para publicarlo en GitHub.';
             renderEvents();
         } catch (error) {
             setAdminError(error.message || 'No se pudo validar la clave.');
@@ -265,38 +285,48 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!editorForm.reportValidity()) return;
         setEditorError('');
         const submitButton = editorForm.querySelector('[type="submit"]');
-        const payload = {
-            password: adminPassword,
+        const changes = {
             title: editorTitle.value.trim(),
             date: editorDate.value,
             time: editorTime.value,
             description: editorDescription.value.trim()
         };
-        if (newImageData) payload.image = newImageData;
-        else if (removeImage.checked) payload.image = '';
+        if (newImageData) changes.image = newImageData;
+        else if (removeImage.checked) changes.image = '';
 
         submitButton.disabled = true;
         try {
-            const response = await fetch(`/api/agenda/events/${encodeURIComponent(editingEventId)}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-            if (response.status === 401) {
-                adminPassword = '';
-                adminLogin.hidden = false;
-                adminAuthenticated.hidden = true;
-                renderEvents();
-                throw new Error('La sesión expiró. Ingresa nuevamente la clave.');
-            }
-            if (!response.ok) throw new Error(result.error || 'No se pudo guardar el evento.');
+            if (agendaApiAvailable) {
+                const eventUrl = new URL(`api/agenda/events/${encodeURIComponent(editingEventId)}`, window.location.href);
+                const response = await fetch(eventUrl, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ...changes, password: adminPassword })
+                });
+                const result = await response.json();
+                if (response.status === 401) {
+                    adminPassword = '';
+                    adminLogin.hidden = false;
+                    adminAuthenticated.hidden = true;
+                    renderEvents();
+                    throw new Error('La sesión expiró. Ingresa nuevamente la clave.');
+                }
+                if (!response.ok) throw new Error(result.error || 'No se pudo guardar el evento.');
 
-            const eventIndex = events.findIndex(item => String(item.id) === String(result.event.id));
-            if (eventIndex !== -1) events[eventIndex] = result.event;
-            renderEvents();
-            closeEditor();
-            adminStatus.textContent = 'Cambios guardados. Ya están visibles para todos.';
+                const eventIndex = events.findIndex(item => String(item.id) === String(result.event.id));
+                if (eventIndex !== -1) events[eventIndex] = result.event;
+                renderEvents();
+                closeEditor();
+                adminStatus.textContent = 'Cambios guardados. Ya están visibles para todos.';
+            } else {
+                const eventIndex = events.findIndex(item => String(item.id) === editingEventId);
+                if (eventIndex === -1) throw new Error('No se encontró el evento que intentas editar.');
+                events[eventIndex] = { ...events[eventIndex], ...changes };
+                renderEvents();
+                downloadAgenda();
+                closeEditor();
+                adminStatus.textContent = 'Se descargó agenda.json. Súbelo al repositorio para publicar los cambios.';
+            }
         } catch (error) {
             setEditorError(error.message || 'No se pudo guardar el evento.');
         } finally {

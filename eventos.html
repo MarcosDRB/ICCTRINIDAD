@@ -56,26 +56,6 @@
             <h3 class="home-pdf-subtitle">Eventos de nuestra comunidad</h3>
             <div id="eventsGrid" class="quienes-events-grid" aria-live="polite"></div>
 
-            <div class="event-admin-actions">
-                <button id="openEventAdmin" class="event-admin-trigger" type="button" aria-expanded="false">
-                    Administrar eventos
-                </button>
-            </div>
-            <section id="eventAdminPanel" class="event-admin-panel" aria-label="Administración de eventos" hidden>
-                <button id="closeEventAdmin" class="event-admin-close" type="button" aria-label="Cerrar">×</button>
-                <form id="eventAdminLogin">
-                    <h4>Acceso de administración</h4>
-                    <label for="eventAdminPassword">Clave de administración</label>
-                    <input id="eventAdminPassword" type="password" autocomplete="current-password" required />
-                    <button class="event-admin-trigger" type="submit">Ingresar</button>
-                </form>
-                <div id="eventAdminAuthenticated" hidden>
-                    <p id="eventAdminStatus" role="status">Modo de edición activado.</p>
-                    <button id="eventAdminLogout" class="event-admin-secondary" type="button">Salir del modo de edición</button>
-                </div>
-                <p id="eventAdminError" class="event-admin-error" role="alert" hidden></p>
-            </section>
-
             <div id="eventEditorOverlay" class="event-editor-overlay" role="dialog" aria-modal="true"
                 aria-labelledby="eventEditorTitle" hidden>
                 <form id="eventEditorForm" class="event-editor-form">
@@ -158,6 +138,25 @@
                     </svg>
                 </a>
             </div>
+            <div class="event-admin-actions event-admin-actions--footer">
+                <button id="openEventAdmin" class="event-admin-trigger event-admin-trigger--footer" type="button" aria-expanded="false">
+                    Administrar eventos
+                </button>
+            </div>
+            <section id="eventAdminPanel" class="event-admin-panel" aria-label="Administración de eventos" hidden>
+                <button id="closeEventAdmin" class="event-admin-close" type="button" aria-label="Cerrar">×</button>
+                <form id="eventAdminLogin">
+                    <h4>Acceso de administración</h4>
+                    <label for="eventAdminPassword">Clave de administración</label>
+                    <input id="eventAdminPassword" type="password" autocomplete="current-password" required />
+                    <button class="event-admin-trigger" type="submit">Ingresar</button>
+                </form>
+                <div id="eventAdminAuthenticated" hidden>
+                    <p id="eventAdminStatus" role="status">Modo de edición activado.</p>
+                    <button id="eventAdminLogout" class="event-admin-secondary" type="button">Salir del modo de edición</button>
+                </div>
+                <p id="eventAdminError" class="event-admin-error" role="alert" hidden></p>
+            </section>
         </div>
     </footer>
     <script src="scripts.js"></script>
