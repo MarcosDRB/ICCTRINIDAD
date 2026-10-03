@@ -7,6 +7,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = process.env.AGENDA_ADMIN_PASSWORD || 'TRINIDAD2026';
 const DATA_FILE = process.env.DATA_FILE || path.join(__dirname, 'agenda.json');
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const IMAGE_DATA_URL_PATTERN = /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/;
 
 const defaultEvents = [
     { id: crypto.randomUUID(), title: 'Servicio Dominical', date: '2026-07-26T10:00:00', place: 'Sede Principal' },
@@ -15,7 +17,7 @@ const defaultEvents = [
     { id: crypto.randomUUID(), title: 'Taller de Discipulado', date: '2026-08-05T17:00:00', place: 'Salón 2' }
 ];
 
-app.use(express.json());
+app.use(express.json({ limit: '7mb' }));
 app.use(express.static(__dirname));
 
 function ensureDataFile() {
@@ -41,11 +43,16 @@ function readEvents() {
     const raw = fs.readFileSync(DATA_FILE, 'utf8');
     const parsed = JSON.parse(raw);
     const events = Array.isArray(parsed.events) ? parsed.events : [];
-    return events.filter(e => e && e.title && e.date && e.place).map(e => ({
+    return events.filter(e => e && e.title && e.date).map(e => ({
         id: e.id || crypto.randomUUID(),
         title: String(e.title),
         date: String(e.date),
-        place: String(e.place)
+        place: String(e.place || ''),
+        time: String(e.time || ''),
+        description: String(e.description || ''),
+        image: String(e.image || ''),
+        theme: String(e.theme || ''),
+        posterLabel: String(e.posterLabel || '')
     }));
 }
 
@@ -59,6 +66,18 @@ function sortEvents(events) {
 
 function isAuthorized(password) {
     return typeof password === 'string' && password.trim() === String(ADMIN_PASSWORD).trim();
+}
+
+function isValidDate(value) {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    const parsed = new Date(`${value}T00:00:00Z`);
+    return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}
+
+function isValidImage(value) {
+    if (typeof value !== 'string' || !IMAGE_DATA_URL_PATTERN.test(value)) return false;
+    const encodedImage = value.slice(value.indexOf(',') + 1);
+    return Buffer.from(encodedImage, 'base64').length <= MAX_IMAGE_BYTES;
 }
 
 app.get('/api/agenda/events', (req, res) => {
@@ -96,6 +115,41 @@ app.post('/api/agenda/update-dates', (req, res) => {
     return res.json({ ok: true, events: sortEvents(readEvents()) });
 });
 
+app.put('/api/agenda/events/:id', (req, res) => {
+    const { password, title, date, time, description, image } = req.body || {};
+    if (!isAuthorized(password)) {
+        return res.status(401).json({ error: 'No autorizado' });
+    }
+
+    if (
+        typeof title !== 'string' || !title.trim() || title.trim().length > 160 ||
+        !isValidDate(date) ||
+        typeof time !== 'string' || time.length > 80 ||
+        typeof description !== 'string' || description.length > 2000 ||
+        (image !== undefined && image !== '' && !isValidImage(image))
+    ) {
+        return res.status(400).json({ error: 'Revisa el nombre, la fecha, la hora, la descripción y la imagen.' });
+    }
+
+    const events = readEvents();
+    const eventIndex = events.findIndex(event => event.id === req.params.id);
+    if (eventIndex === -1) {
+        return res.status(404).json({ error: 'Evento no encontrado.' });
+    }
+
+    events[eventIndex] = {
+        ...events[eventIndex],
+        title: title.trim(),
+        date,
+        time,
+        description: description.trim(),
+        ...(image !== undefined ? { image } : {})
+    };
+
+    writeEvents(sortEvents(events));
+    return res.json({ ok: true, event: readEvents().find(event => event.id === req.params.id) });
+});
+
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -114,6 +168,8 @@ module.exports = {
     writeEvents,
     sortEvents,
     isAuthorized,
+    isValidDate,
+    isValidImage,
     defaultEvents,
     DATA_FILE
 };

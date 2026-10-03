@@ -519,32 +519,43 @@ h4 {
 }
 
 .home-pdf-ministries .home-pdf-collage {
-    min-height: 380px !important;
-    display: block;
-    overflow: hidden;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(0.8rem, 1.4vw, 1.2rem);
+    align-items: end;
+    overflow: visible;
     border-radius: 0;
     position: relative;
 }
 
 .home-pdf-ministries .home-pdf-collage img {
-    max-height: 360px !important;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+    object-position: center center;
+    display: block;
+    border-radius: 14px;
+    box-shadow: 0 18px 30px rgba(11, 35, 64, 0.18);
 }
 
 .home-pdf-ministries .home-pdf-collage-a {
-    width: 78% !important;
-    position: absolute !important;
-    left: 0 !important;
-    top: -60px !important;
-    transform: rotate(-6deg);
+    width: 100%;
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: rotate(-5deg);
     z-index: 1;
 }
 
 .home-pdf-ministries .home-pdf-collage-b {
-    width: 78% !important;
-    position: absolute !important;
-    right: -40px !important;
-    top: 60px !important;
-    transform: rotate(5deg);
+    width: 100%;
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: rotate(4deg);
     z-index: 2;
 }
 
@@ -2646,6 +2657,126 @@ nav a:hover,
     }
 }
 
+/* ===== Estilo compartido de páginas interiores ===== */
+.site-page main {
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.site-page main > section:not(.card) {
+    padding-right: clamp(0.9rem, 4vw, 4.25rem);
+    padding-left: clamp(0.9rem, 4vw, 4.25rem);
+}
+
+.site-page main > section.card {
+    width: 100%;
+    margin: 0;
+    padding: clamp(1.6rem, 3.4vw, 3.4rem) clamp(0.9rem, 4vw, 4.25rem);
+    border: 0;
+    border-radius: 0;
+    background: var(--palette-white);
+    box-shadow: none;
+}
+
+.site-page main > section.card::before {
+    content: none;
+}
+
+.site-page main > section.card:hover {
+    transform: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.site-page main > section.card > h2,
+.site-page .section-title {
+    color: var(--palette-blue);
+    font-family: Inter, system-ui, sans-serif;
+    font-weight: 800;
+}
+
+.site-page .event-card,
+.site-page .photo-card,
+.site-page .leader-card,
+.site-page .historia-card {
+    overflow: hidden;
+    border: 1px solid rgba(9, 88, 139, 0.22);
+    border-radius: 14px;
+    background: linear-gradient(165deg, rgba(97, 158, 214, 0.2), rgba(9, 88, 139, 0.08));
+    box-shadow: 0 10px 26px rgba(9, 88, 139, 0.08);
+}
+
+.site-page .event-card,
+.site-page .photo-card,
+.site-page .historia-card {
+    padding: 1rem;
+}
+
+.site-page .leader-card {
+    padding: 8px;
+    color: var(--palette-blue-deep);
+}
+
+.site-page .event-card:hover,
+.site-page .photo-card:hover,
+.site-page .leader-card:hover,
+.site-page .historia-card:hover {
+    border-color: var(--palette-blue-light);
+    box-shadow: 0 18px 38px rgba(9, 88, 139, 0.16);
+}
+
+.site-page .person-caption,
+.site-page .leader-card strong,
+.site-page .historia-card h3,
+.site-page .historia-card h4 {
+    color: var(--palette-blue-deep);
+}
+
+.site-page .historia-hero {
+    border: 0;
+    border-radius: 0;
+    background: linear-gradient(135deg, var(--palette-blue-deep), var(--palette-black));
+}
+
+.site-page .historia-intro {
+    padding-top: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    border-bottom: 1px solid rgba(9, 88, 139, 0.14);
+    background: var(--palette-white);
+}
+
+.site-page .historia-intro .eyebrow,
+.site-page .historia-intro h2 {
+    color: var(--palette-blue);
+}
+
+.site-page .historia-intro .pill {
+    border-color: rgba(9, 88, 139, 0.22);
+    background: rgba(97, 158, 214, 0.14);
+    color: var(--palette-blue-deep);
+}
+
+.site-page #donationForm,
+.site-page #summary,
+.site-page .historia-stat {
+    border: 1px solid rgba(9, 88, 139, 0.2);
+    border-radius: 12px;
+    background: rgba(97, 158, 214, 0.12);
+    box-shadow: 0 8px 22px rgba(9, 88, 139, 0.07);
+}
+
+.site-page .site-footer {
+    border-top: 3px solid var(--palette-blue);
+}
+
+@media (max-width: 767px) {
+    .site-page main > section.card {
+        padding: 1.5rem 1rem;
+    }
+}
+
 /* ===== Conócenos / ¿Quiénes somos? ===== */
 .quienes-hero {
     position: relative;
@@ -2897,7 +3028,409 @@ nav a:hover,
 }
 
 .quienes-schedule-grid {
-    grid-template-columns: repeat(3, minmax(0, 340px));
+    grid-template-columns: repeat(4, minmax(220px, 1fr));
+    align-items: stretch;
+}
+
+.quienes-schedule-grid .quienes-card {
+    min-height: 200px;
+}
+
+.quienes-events-grid {
+    margin-top: 1.4rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(0.8rem, 1.5vw, 1.2rem);
+    align-items: stretch;
+}
+
+.quienes-event-card {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.65rem;
+    background: #fff;
+    text-align: center;
+}
+
+.quienes-event-poster {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    padding: 1rem;
+    overflow: hidden;
+    color: #fff;
+    background: var(--palette-blue);
+    text-align: center;
+}
+
+.quienes-event-poster-label {
+    margin: 0;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.quienes-event-poster-title {
+    margin: 0;
+    color: inherit;
+    font-family: Inter, system-ui, sans-serif;
+    font-size: clamp(1rem, 1.5vw, 1.4rem);
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.quienes-event-poster-date {
+    margin: 0;
+    padding: 0.35rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--palette-blue-deep);
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.quienes-event-poster--kids {
+    background: #dcffc9;
+    color: #245bba;
+}
+
+.quienes-event-poster--seminar {
+    background: #29262d;
+}
+
+.quienes-event-poster--leaders {
+    background: #f5b900;
+    color: #173f9b;
+}
+
+.quienes-event-poster--volunteers {
+    background: #71858a;
+}
+
+.quienes-event-poster--baby {
+    background: #ffe27a;
+    color: #6755b6;
+}
+
+.quienes-event-poster--luminacion {
+    background: #101116;
+    color: #f5d34e;
+}
+
+.quienes-event-card-title {
+    min-height: 2.8em;
+    margin: 0.75rem 0 0.35rem;
+    color: #1474d4;
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 0.98rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.quienes-event-card-meta {
+    margin: 0.1rem 0;
+    color: #293746;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.quienes-event-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    background: #1474d4;
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+    text-decoration: none;
+}
+
+.quienes-event-details {
+    width: 100%;
+    margin-top: auto;
+}
+
+.quienes-event-link::-webkit-details-marker {
+    display: none;
+}
+
+.quienes-event-link span + span,
+.quienes-event-details[open] .quienes-event-link span:first-child {
+    display: none;
+}
+
+.quienes-event-details[open] .quienes-event-link span + span {
+    display: inline;
+}
+
+.quienes-event-description {
+    margin: 0.65rem 0 0;
+    padding: 0.7rem;
+    border-radius: 8px;
+    background: rgba(97, 158, 214, 0.12);
+    color: #293746;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    text-align: left;
+}
+
+.quienes-event-link:hover,
+.quienes-event-link:focus-visible {
+    background: var(--palette-blue-deep);
+    color: #fff;
+}
+
+.quienes-event-poster--image {
+    padding: 0;
+    background: #edf3f8;
+}
+
+.quienes-event-poster-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.quienes-event-edit,
+.event-admin-trigger,
+.event-admin-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid #1474d4;
+    border-radius: 7px;
+    background: #1474d4;
+    color: #fff;
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.quienes-event-edit {
+    width: 100%;
+    margin-top: 0.65rem;
+}
+
+.event-admin-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.event-admin-trigger:hover,
+.quienes-event-edit:hover {
+    background: var(--palette-blue-deep);
+}
+
+.event-admin-secondary {
+    border-color: rgba(9, 88, 139, 0.25);
+    background: #fff;
+    color: var(--palette-blue-deep);
+}
+
+.event-admin-panel {
+    position: relative;
+    width: min(100%, 520px);
+    margin: 1rem 0 0 auto;
+    padding: 1.25rem;
+    border: 1px solid rgba(9, 88, 139, 0.2);
+    border-radius: 10px;
+    background: #f4f9fd;
+    box-shadow: 0 12px 30px rgba(9, 88, 139, 0.12);
+}
+
+.event-admin-panel h4,
+.event-editor-form h3 {
+    margin: 0 2rem 1rem 0;
+    color: var(--palette-blue-deep);
+    font-family: Inter, system-ui, sans-serif;
+}
+
+.event-admin-panel label,
+.event-editor-form > label,
+.event-editor-date-time label {
+    display: block;
+    margin: 0.8rem 0 0.35rem;
+    color: #25394c;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.event-admin-panel input,
+.event-editor-form input[type="text"],
+.event-editor-form input[type="date"],
+.event-editor-form input[type="file"],
+.event-editor-form textarea {
+    width: 100%;
+    min-height: 42px;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid rgba(9, 88, 139, 0.28);
+    border-radius: 6px;
+    background: #fff;
+    color: #182b3b;
+    font: inherit;
+}
+
+.event-editor-form textarea {
+    resize: vertical;
+}
+
+.event-admin-panel form .event-admin-trigger {
+    margin-top: 0.9rem;
+}
+
+.event-admin-error {
+    margin: 0.8rem 0 0;
+    color: #a32222;
+    font-size: 0.88rem;
+}
+
+.event-admin-close {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--palette-blue-deep);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.event-editor-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    overflow-y: auto;
+    background: rgba(5, 18, 29, 0.68);
+}
+
+.event-editor-overlay[hidden],
+.event-admin-panel[hidden],
+.event-editor-preview[hidden],
+.event-admin-error[hidden],
+#eventAdminAuthenticated[hidden],
+#eventAdminLogin[hidden] {
+    display: none;
+}
+
+.event-editor-form {
+    position: relative;
+    width: min(100%, 620px);
+    max-height: calc(100dvh - 2rem);
+    padding: clamp(1rem, 3vw, 1.6rem);
+    overflow-y: auto;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+.event-editor-heading {
+    position: relative;
+}
+
+.event-editor-date-time {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+}
+
+.event-editor-hint {
+    display: block;
+    margin-top: 0.35rem;
+    color: #5a6b79;
+    font-size: 0.78rem;
+}
+
+.event-image-remove {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+    color: #25394c;
+    font-size: 0.86rem;
+}
+
+.event-image-remove input {
+    width: 1rem;
+    height: 1rem;
+}
+
+.event-editor-preview {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 260px;
+    margin-top: 0.9rem;
+    border-radius: 6px;
+    object-fit: contain;
+}
+
+.event-editor-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 1.3rem;
+}
+
+.event-editor-footer button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+@media (max-width: 1024px) {
+    .quienes-events-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .quienes-events-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .quienes-events-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quienes-event-card {
+        width: min(100%, 320px);
+        margin-inline: auto;
+    }
+
+    .event-editor-date-time {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .event-editor-footer {
+        flex-direction: column-reverse;
+    }
 }
 
 .quienes-chip-list {

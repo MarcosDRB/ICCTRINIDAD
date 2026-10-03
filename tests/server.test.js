@@ -91,9 +91,19 @@ describe('readEvents', () => {
 
         const events = server.readEvents();
 
-        expect(events).toHaveLength(2);
-        expect(events[0]).toEqual({ id: 'ok', title: 'Culto', date: '2026-01-01T10:00:00', place: 'Sede' });
-        expect(events[1]).toEqual({ id: 5, title: '7', date: '2026-01-03T10:00:00', place: '9' });
+        expect(events).toHaveLength(3);
+        expect(events[0]).toEqual({
+            id: 'ok', title: 'Culto', date: '2026-01-01T10:00:00', place: 'Sede',
+            time: '', description: '', image: '', theme: '', posterLabel: ''
+        });
+        expect(events[1]).toEqual({
+            id: expect.any(String), title: 'Sin lugar', date: '2026-01-02T10:00:00', place: '',
+            time: '', description: '', image: '', theme: '', posterLabel: ''
+        });
+        expect(events[2]).toEqual({
+            id: 5, title: '7', date: '2026-01-03T10:00:00', place: '9',
+            time: '', description: '', image: '', theme: '', posterLabel: ''
+        });
     });
 
     test('generates an id for events that do not have one', () => {
@@ -212,8 +222,8 @@ describe('POST /api/agenda/update-dates', () => {
         expect(res.status).toBe(200);
         expect(res.body.ok).toBe(true);
         expect(res.body.events).toEqual([
-            { id: 'b', title: 'Segundo', date: '2026-03-01T10:00:00', place: 'Capilla' },
-            { id: 'a', title: 'Primero', date: '2026-04-01T10:00:00', place: 'Sede' }
+            { id: 'b', title: 'Segundo', date: '2026-03-01T10:00:00', place: 'Capilla', time: '', description: '', image: '', theme: '', posterLabel: '' },
+            { id: 'a', title: 'Primero', date: '2026-04-01T10:00:00', place: 'Sede', time: '', description: '', image: '', theme: '', posterLabel: '' }
         ]);
         expect(readDataFile().events.find(e => e.id === 'a').date).toBe('2026-04-01T10:00:00');
     });
@@ -246,6 +256,71 @@ describe('POST /api/agenda/update-dates', () => {
 
         expect(res.status).toBe(400);
         expect(res.body).toEqual({ error: 'Datos incompletos' });
+    });
+});
+
+describe('PUT /api/agenda/events/:id', () => {
+    beforeEach(() => {
+        fs.mkdirSync(path.dirname(dataFile), { recursive: true });
+        writeDataFile({
+            events: [{
+                id: 'event-1', title: 'Encuentro', date: '2026-10-11', time: '18:00',
+                place: 'Sede', description: 'Descripción anterior', image: '', theme: 'leaders'
+            }]
+        });
+    });
+
+    test('updates event content and image with the configured password', async () => {
+        const changes = {
+            password: PASSWORD,
+            title: 'Nuevo encuentro',
+            date: '2026-10-12',
+            time: '7:30 p. m. - 9:00 p. m.',
+            description: 'Una nueva descripción.',
+            image: 'data:image/png;base64,aGVsbG8='
+        };
+
+        const res = await request(server.app).put('/api/agenda/events/event-1').send(changes);
+
+        expect(res.status).toBe(200);
+        expect(res.body.event).toEqual({
+            id: 'event-1', title: 'Nuevo encuentro', date: '2026-10-12', time: '7:30 p. m. - 9:00 p. m.',
+            place: 'Sede', description: 'Una nueva descripción.', image: changes.image, theme: 'leaders', posterLabel: ''
+        });
+        expect(readDataFile().events[0]).toMatchObject({ title: 'Nuevo encuentro', image: changes.image });
+    });
+
+    test('rejects unauthorized updates without changing the event', async () => {
+        const res = await request(server.app)
+            .put('/api/agenda/events/event-1')
+            .send({ password: 'incorrecta', title: 'Cambio', date: '2026-10-12', time: '', description: '' });
+
+        expect(res.status).toBe(401);
+        expect(readDataFile().events[0].title).toBe('Encuentro');
+    });
+
+    test('rejects invalid dates and image formats', async () => {
+        const res = await request(server.app)
+            .put('/api/agenda/events/event-1')
+            .send({
+                password: PASSWORD,
+                title: 'Cambio',
+                date: '2026-02-31',
+                time: '25:00',
+                description: '',
+                image: 'data:image/svg+xml;base64,PHN2Zz4='
+            });
+
+        expect(res.status).toBe(400);
+        expect(readDataFile().events[0].title).toBe('Encuentro');
+    });
+
+    test('returns 404 for an unknown event', async () => {
+        const res = await request(server.app)
+            .put('/api/agenda/events/missing')
+            .send({ password: PASSWORD, title: 'Cambio', date: '2026-10-12', time: '', description: '' });
+
+        expect(res.status).toBe(404);
     });
 });
 

@@ -2,27 +2,69 @@
   "events": [
     {
       "id": "ev-1",
-      "title": "Servicio Dominical",
-      "date": "2026-07-26T09:00",
-      "place": "Sede Principal"
+      "title": "Presentación de niños - Septiembre 2026",
+      "date": "2026-10-03",
+      "place": "",
+      "time": "7:00 a. m. - 1:00 p. m.",
+      "description": "Un momento para presentar y bendecir a los niños, acompañando a sus familias en comunidad.",
+      "image": "",
+      "theme": "kids",
+      "posterLabel": "Familias ICC"
     },
     {
       "id": "ev-2",
-      "title": "Reunión de Oración",
-      "date": "2026-07-29T19:00",
-      "place": "Capilla"
+      "title": "Seminario Guerra espiritual y liberación - Octubre 2026",
+      "date": "2026-10-06",
+      "place": "",
+      "time": "8:00 p. m. - 10:00 p. m.",
+      "description": "Un espacio de enseñanza y oración para fortalecer la fe y profundizar en principios bíblicos de libertad espiritual.",
+      "image": "",
+      "theme": "seminar",
+      "posterLabel": "Seminario"
     },
     {
       "id": "ev-3",
-      "title": "Encuentro Jóvenes",
-      "date": "2026-08-01T18:30",
-      "place": "Salón principal"
+      "title": "Academia de líderes - Octubre 2026",
+      "date": "2026-10-11",
+      "place": "",
+      "time": "Todo el día",
+      "description": "Inicio de un nuevo ciclo de formación para desarrollar el carácter, los dones y las herramientas de servicio de nuestros líderes.",
+      "image": "",
+      "theme": "leaders",
+      "posterLabel": "Academia de líderes"
     },
     {
       "id": "ev-4",
-      "title": "Taller de Discipulado",
-      "date": "2026-08-05T17:00",
-      "place": "Salón 2"
+      "title": "Expo Voluntarios - Octubre 2026",
+      "date": "2026-10-11",
+      "place": "",
+      "time": "7:00 a. m. - 1:30 p. m.",
+      "description": "Conoce los ministerios de la iglesia y encuentra una oportunidad para poner tus talentos al servicio de la comunidad.",
+      "image": "",
+      "theme": "volunteers",
+      "posterLabel": "Servicio"
+    },
+    {
+      "id": "ev-5",
+      "title": "Baby shower - Octubre 2026",
+      "date": "2026-10-11",
+      "place": "",
+      "time": "9:30 a. m. - 10:30 a. m.",
+      "description": "Una reunión para celebrar y acompañar con cariño a la familia que espera la llegada de su bebé.",
+      "image": "",
+      "theme": "baby",
+      "posterLabel": "Encuentro familiar"
+    },
+    {
+      "id": "ev-6",
+      "title": "Luminación: El Cielo en la Tierra",
+      "date": "2026-10-31",
+      "place": "",
+      "time": "6:00 p. m.",
+      "description": "Una noche de adoración y encuentro para celebrar la presencia de Dios y compartir como iglesia.",
+      "image": "",
+      "theme": "luminacion",
+      "posterLabel": "Noche especial"
     }
   ]
 }
