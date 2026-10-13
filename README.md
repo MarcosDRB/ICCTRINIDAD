@@ -1,6 +1,6 @@
-# ICC La Trinidad - Agenda Compartida
+# ICC La Trinidad
 
-Este sitio ahora incluye una agenda compartida para que los cambios del pastor se vean por todos los visitantes.
+Sitio estático publicado con GitHub Pages. Eventos, Prédicas, Liderazgo, Grupos y Testimonios permiten editar su contenido desde la misma página y guardar cambios como commits en GitHub.
 
 ## Requisitos
 
@@ -22,35 +22,20 @@ Abre en navegador:
 
 - http://localhost:3000/conocenos.html
 
-## Edición local
+## Editar desde GitHub Pages
 
-Al ejecutar el servidor Node local, la clave predeterminada para el editor es:
+En Eventos, Prédicas, Liderazgo, Grupos y Testimonios, el acceso de administración está abajo a la izquierda del footer. Para conectarse, se requiere:
 
-- `TRINIDAD2026`
+1. La clave de administración: `TRINIDAD2026`.
+2. Crea un token fine-grained desde [GitHub Settings](https://github.com/settings/personal-access-tokens/new), selecciona solo `ICCTRINIDAD` y concede `Contents: Read and write` en Repository permissions.
+3. La cuenta debe tener permiso de escritura en el repositorio.
 
-Para cambiarla localmente:
+El token se ingresa en el navegador y se conserva solo en memoria mientras la página está abierta; no se guarda en el repositorio ni en el almacenamiento del navegador. No lo compartas por chat ni lo agregues al código.
 
-```bash
-set AGENDA_ADMIN_PASSWORD=TU_CLAVE_SEGURA
-npm.cmd start
-```
+Al editar una página, los cambios se guardan directamente como un commit en `main`. Eventos actualiza `agenda.json`; las otras páginas guardan su archivo HTML. GitHub Pages puede tardar unos minutos en publicar cada commit.
 
-## Cómo funciona la agenda
+La clave de administración es solo una barrera visual del panel estático. La autorización efectiva para escribir la controla el token de GitHub y los permisos de la cuenta.
 
-- GitHub Pages carga los eventos directamente desde `agenda.json`.
-- El formulario de administración funciona solo con el servidor Node local.
-- Para publicar cambios en GitHub Pages, edita `agenda.json` y sube el cambio a la rama `main`.
+## Publicación
 
-## Archivo de datos
-
-La agenda se guarda en:
-
-- `agenda.json`
-
-Haz backup de ese archivo si quieres conservar histórico.
-
-## Publicar con GitHub Pages
-
-El sitio se sirve desde la rama `main` y la carpeta raiz del repositorio. Cada `push` actualiza las paginas y los archivos de `media/`.
-
-GitHub Pages es estático: la agenda pública se lee de `agenda.json` y el panel de edición no se ofrece en esa publicación. Para cambiar los eventos publicados, actualiza `agenda.json` y sube el cambio a GitHub.
+GitHub Pages se sirve desde la rama `main` y la raíz del repositorio. Los cambios guardados desde los editores se publican automáticamente; también se puede actualizar el sitio con un `git push`.

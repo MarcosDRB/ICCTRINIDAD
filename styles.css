@@ -3237,7 +3237,7 @@ nav a:hover,
 }
 
 .site-footer .event-admin-actions--footer {
-    justify-content: center;
+    justify-content: flex-start;
     margin-top: 0.45rem;
 }
 
@@ -3279,9 +3279,115 @@ nav a:hover,
 }
 
 .site-footer .event-admin-panel {
-    margin-inline: auto;
+    margin-left: 0;
+    margin-right: auto;
     color: #25394c;
     text-align: left;
+}
+
+.github-editor-tools {
+    width: 100%;
+    margin-top: 0.45rem;
+    text-align: left;
+}
+
+.github-editor-trigger,
+.github-editor-action,
+.github-editor-logout {
+    min-height: 34px;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.76);
+    font: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+}
+
+.github-editor-trigger:hover,
+.github-editor-action:hover,
+.github-editor-logout:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+.github-editor-panel {
+    width: min(100%, 440px);
+    margin-top: 0.55rem;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    background: #fff;
+    color: #25394c;
+    text-align: left;
+}
+
+.github-editor-panel[hidden],
+.github-editor-session[hidden],
+.github-editor-error[hidden],
+.github-editor-save[hidden],
+.github-editor-cancel[hidden],
+.github-editor-start[hidden] {
+    display: none;
+}
+
+.github-editor-panel label {
+    display: block;
+    margin-top: 0.65rem;
+    color: #25394c;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.github-editor-panel input[type="password"] {
+    display: block;
+    width: 100%;
+    min-height: 40px;
+    margin-top: 0.25rem;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid rgba(9, 88, 139, 0.28);
+    border-radius: 5px;
+    background: #fff;
+    color: #182b3b;
+    font: inherit;
+}
+
+.github-editor-hint,
+.github-editor-status {
+    margin: 0.6rem 0;
+    color: #4e5e6b;
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+.github-editor-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.github-editor-panel .github-editor-action {
+    border-color: #1474d4;
+    background: #1474d4;
+    color: #fff;
+}
+
+.github-editor-error {
+    margin: 0.6rem 0 0;
+    color: #a32222;
+    font-size: 0.82rem;
+}
+
+.github-editor-editing {
+    outline: 2px dashed #1474d4;
+    outline-offset: -2px;
+}
+
+.github-editor-editing img,
+.github-editor-editing iframe,
+.github-editor-editing .leader-card {
+    cursor: cell;
 }
 
 .event-admin-panel h4,

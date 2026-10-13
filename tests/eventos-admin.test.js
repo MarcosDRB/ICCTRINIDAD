@@ -13,6 +13,7 @@ const ADMIN_MARKUP = `
         <button id="closeEventAdmin"></button>
         <form id="eventAdminLogin">
             <input id="eventAdminPassword" />
+            <input id="eventAdminGitHubToken" />
             <button type="submit">Ingresar</button>
         </form>
         <div id="eventAdminAuthenticated" hidden>
@@ -74,9 +75,16 @@ async function flushPromises() {
 
 beforeEach(() => {
     window.history.replaceState({}, '', '/ICCTRINIDAD/eventos.html');
-    global.fetch = jest.fn()
-        .mockResolvedValueOnce({ ok: true, json: async () => ({ events: [makeEvent()] }) })
-        .mockRejectedValueOnce(new Error('GitHub Pages no tiene API de agenda'));
+    global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        text: async () => JSON.stringify({ events: [makeEvent()] })
+    });
+    window.GitHubContent = {
+        authenticate: jest.fn().mockResolvedValue('admin-icc'),
+        readFile: jest.fn().mockResolvedValue({ content: JSON.stringify({ events: [makeEvent()] }), sha: 'sha-1' }),
+        saveFile: jest.fn().mockResolvedValue({ commit: { sha: 'commit-1' } }),
+        clearSession: jest.fn()
+    };
 });
 
 afterEach(() => {
@@ -87,7 +95,7 @@ afterEach(() => {
 });
 
 describe('administración de eventos en GitHub Pages', () => {
-    test('mantiene visible el acceso y carga la agenda estática sin API', async () => {
+    test('mantiene visible el acceso y carga la agenda estática', async () => {
         loadAdminScript();
         await flushPromises();
 
@@ -95,21 +103,19 @@ describe('administración de eventos en GitHub Pages', () => {
         expect(document.querySelector('#openEventAdmin').hidden).toBe(false);
     });
 
-    test('acepta la clave y permite descargar la agenda modificada', async () => {
-        const createObjectURL = jest.fn().mockReturnValue('blob:agenda');
-        Object.defineProperty(URL, 'createObjectURL', { configurable: true, value: createObjectURL });
-        Object.defineProperty(URL, 'revokeObjectURL', { configurable: true, value: jest.fn() });
-        jest.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+    test('acepta la clave y guarda los cambios en GitHub', async () => {
         loadAdminScript();
         await flushPromises();
 
         document.querySelector('#openEventAdmin').click();
         const passwordInput = document.querySelector('#eventAdminPassword');
         passwordInput.value = 'TRINIDAD2026';
+        document.querySelector('#eventAdminGitHubToken').value = 'ghp_test_token';
         document.querySelector('#eventAdminLogin').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
         await flushPromises();
 
         expect(document.querySelector('#eventAdminAuthenticated').hidden).toBe(false);
+        expect(window.GitHubContent.authenticate).toHaveBeenCalledWith('ghp_test_token');
         expect(document.querySelector('[data-edit-event="event-1"]')).not.toBeNull();
 
         document.querySelector('[data-edit-event="event-1"]').click();
@@ -119,9 +125,13 @@ describe('administración de eventos en GitHub Pages', () => {
         document.querySelector('#eventEditorForm').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
         await flushPromises();
 
-        expect(createObjectURL).toHaveBeenCalledWith(expect.any(Blob));
-        expect(HTMLAnchorElement.prototype.click).toHaveBeenCalled();
-        expect(document.querySelector('#eventAdminStatus').textContent).toContain('Se descargó agenda.json');
+        expect(window.GitHubContent.saveFile).toHaveBeenCalledWith(
+            'agenda.json',
+            expect.stringContaining('Encuentro actualizado'),
+            'Actualiza evento: Encuentro actualizado',
+            JSON.stringify({ events: [makeEvent()] })
+        );
+        expect(document.querySelector('#eventAdminStatus').textContent).toContain('Cambios guardados en GitHub');
         expect(document.querySelector('#eventsGrid').textContent).toContain('Encuentro actualizado');
     });
 

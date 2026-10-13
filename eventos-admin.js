@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeAdminButton = document.getElementById('closeEventAdmin');
     const adminLogin = document.getElementById('eventAdminLogin');
     const adminPasswordInput = document.getElementById('eventAdminPassword');
+    const githubTokenInput = document.getElementById('eventAdminGitHubToken');
     const adminAuthenticated = document.getElementById('eventAdminAuthenticated');
     const adminStatus = document.getElementById('eventAdminStatus');
     const adminError = document.getElementById('eventAdminError');
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const allowedThemes = new Set(['kids', 'seminar', 'leaders', 'volunteers', 'baby', 'luminacion']);
     let events = [];
-    let agendaApiAvailable = false;
+    let agendaFileContent = '';
     let adminPassword = '';
     let editingEventId = '';
     let newImageData = '';
@@ -105,16 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
         eventsGrid.innerHTML = events.map(renderEvent).join('');
     }
 
-    function downloadAgenda() {
-        const agendaFile = new Blob([JSON.stringify({ events }, null, 2)], { type: 'application/json' });
-        const downloadUrl = URL.createObjectURL(agendaFile);
-        const downloadLink = document.createElement('a');
-        downloadLink.href = downloadUrl;
-        downloadLink.download = 'agenda.json';
-        downloadLink.click();
-        URL.revokeObjectURL(downloadUrl);
-    }
-
     function setAdminError(message) {
         adminError.textContent = message;
         adminError.hidden = !message;
@@ -153,37 +144,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadEvents() {
-        let eventsLoaded = false;
-
         try {
             const response = await fetch('agenda.json');
             if (!response.ok) throw new Error('No fue posible cargar la agenda.');
-            const data = await response.json();
+            agendaFileContent = await response.text();
+            const data = JSON.parse(agendaFileContent);
             events = Array.isArray(data.events) ? data.events : [];
             renderEvents();
-            eventsLoaded = true;
         } catch (error) {
-            events = [];
-        }
-
-        try {
-            const apiUrl = new URL('api/agenda/events', window.location.href);
-            const response = await fetch(apiUrl);
-            if (!response.ok) throw new Error('No hay una API de agenda disponible.');
-            const data = await response.json();
-            events = Array.isArray(data.events) ? data.events : [];
-            renderEvents();
-            eventsLoaded = true;
-            agendaApiAvailable = true;
-            return;
-        } catch (error) {
-            agendaApiAvailable = false;
-        }
-
-        if (!eventsLoaded) {
             eventsGrid.innerHTML = '<p class="event-admin-error">No se pudieron cargar los eventos. Revisa la conexión e inténtalo de nuevo.</p>';
-        } else if (!events.length) {
-            eventsGrid.innerHTML = '<p class="event-admin-error">No hay eventos publicados.</p>';
         }
     }
 
@@ -210,25 +179,21 @@ document.addEventListener('DOMContentLoaded', () => {
         setAdminError('');
         const password = adminPasswordInput.value;
         try {
-            if (agendaApiAvailable) {
-                const verifyUrl = new URL('api/agenda/verify', window.location.href);
-                const response = await fetch(verifyUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password })
-                });
-                if (!response.ok) throw new Error('La clave no es correcta.');
-            } else if (password !== staticAdminPassword) {
+            if (password !== staticAdminPassword) {
                 throw new Error('La clave no es correcta.');
             }
 
+            const githubUser = await window.GitHubContent.authenticate(githubTokenInput.value);
+            const remoteAgenda = await window.GitHubContent.readFile('agenda.json');
+            agendaFileContent = remoteAgenda.content;
+            const data = JSON.parse(agendaFileContent);
+            events = Array.isArray(data.events) ? data.events : [];
             adminPassword = password;
             adminPasswordInput.value = '';
+            githubTokenInput.value = '';
             adminLogin.hidden = true;
             adminAuthenticated.hidden = false;
-            adminStatus.textContent = agendaApiAvailable
-                ? 'Modo de edición activado. Puedes editar cada tarjeta.'
-                : 'Modo de edición activado. Al guardar se descargará agenda.json para publicarlo en GitHub.';
+            adminStatus.textContent = `Conectado como ${githubUser}. Los cambios se guardarán en GitHub.`;
             renderEvents();
         } catch (error) {
             setAdminError(error.message || 'No se pudo validar la clave.');
@@ -237,6 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     logoutButton.addEventListener('click', () => {
         adminPassword = '';
+        window.GitHubContent.clearSession();
         adminLogin.hidden = false;
         adminAuthenticated.hidden = true;
         adminPanel.hidden = true;
@@ -296,37 +262,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         submitButton.disabled = true;
         try {
-            if (agendaApiAvailable) {
-                const eventUrl = new URL(`api/agenda/events/${encodeURIComponent(editingEventId)}`, window.location.href);
-                const response = await fetch(eventUrl, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ...changes, password: adminPassword })
-                });
-                const result = await response.json();
-                if (response.status === 401) {
-                    adminPassword = '';
-                    adminLogin.hidden = false;
-                    adminAuthenticated.hidden = true;
-                    renderEvents();
-                    throw new Error('La sesión expiró. Ingresa nuevamente la clave.');
-                }
-                if (!response.ok) throw new Error(result.error || 'No se pudo guardar el evento.');
-
-                const eventIndex = events.findIndex(item => String(item.id) === String(result.event.id));
-                if (eventIndex !== -1) events[eventIndex] = result.event;
-                renderEvents();
-                closeEditor();
-                adminStatus.textContent = 'Cambios guardados. Ya están visibles para todos.';
-            } else {
-                const eventIndex = events.findIndex(item => String(item.id) === editingEventId);
-                if (eventIndex === -1) throw new Error('No se encontró el evento que intentas editar.');
-                events[eventIndex] = { ...events[eventIndex], ...changes };
-                renderEvents();
-                downloadAgenda();
-                closeEditor();
-                adminStatus.textContent = 'Se descargó agenda.json. Súbelo al repositorio para publicar los cambios.';
+            const eventIndex = events.findIndex(item => String(item.id) === editingEventId);
+            if (eventIndex === -1) throw new Error('No se encontró el evento que intentas editar.');
+            const updatedEvents = [...events];
+            if (changes.image && changes.image.startsWith('data:image/')) {
+                const imageName = editorImage.files[0] ? editorImage.files[0].name : 'evento';
+                changes.image = await window.GitHubContent.saveImage(changes.image, imageName);
             }
+            updatedEvents[eventIndex] = { ...updatedEvents[eventIndex], ...changes };
+            const nextAgendaContent = JSON.stringify({ events: updatedEvents }, null, 2);
+            await window.GitHubContent.saveFile(
+                'agenda.json',
+                nextAgendaContent,
+                `Actualiza evento: ${changes.title}`,
+                agendaFileContent
+            );
+            agendaFileContent = nextAgendaContent;
+            events = updatedEvents;
+            renderEvents();
+            closeEditor();
+            adminStatus.textContent = 'Cambios guardados en GitHub. Pages puede tardar unos minutos en mostrarlos.';
         } catch (error) {
             setEditorError(error.message || 'No se pudo guardar el evento.');
         } finally {
