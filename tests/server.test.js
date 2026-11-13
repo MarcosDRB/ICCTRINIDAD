@@ -1,334 +1,227 @@
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
 const request = require('supertest');
 
-const PASSWORD = 'CLAVE_TEST';
-
-let tmpDir;
-let dataFile;
+const PASSWORD = 'CLAVE_TEST_SEGURA';
 let server;
+let events;
+let pages;
+let images;
+let database;
 
 function loadServer() {
     jest.resetModules();
-    process.env.DATA_FILE = dataFile;
     process.env.AGENDA_ADMIN_PASSWORD = PASSWORD;
-    return require('../server');
+    process.env.ADMIN_SESSION_SECRET = 'secreto-de-prueba-largo';
+    server = require('../server');
+    server.app.locals.database = database;
 }
 
-function writeDataFile(content) {
-    fs.writeFileSync(dataFile, typeof content === 'string' ? content : JSON.stringify(content), 'utf8');
+function createDatabase() {
+    events = [{
+        id: 'event-1',
+        title: 'Culto',
+        date: '2026-01-01',
+        place: 'Sede',
+        time: '',
+        description: '',
+        image: '',
+        theme: '',
+        posterLabel: ''
+    }];
+    pages = new Map([['predicas', { contentHtml: '<section>Contenido</section>', revision: 1 }]]);
+    images = new Map();
+    database = {
+        getEvents: jest.fn(async () => events),
+        updateEvent: jest.fn(async (id, changes) => {
+            const index = events.findIndex(event => event.id === id);
+            if (index < 0) return null;
+            events[index] = { ...events[index], ...changes };
+            return events[index];
+        }),
+        getPage: jest.fn(async key => pages.get(key) || null),
+        savePage: jest.fn(async (key, contentHtml, expectedRevision) => {
+            const current = pages.get(key);
+            if (!current || current.revision !== expectedRevision) return false;
+            pages.set(key, { contentHtml, revision: current.revision + 1 });
+            return true;
+        }),
+        saveImage: jest.fn(async (mimeType, imageData) => {
+            const id = '123e4567-e89b-12d3-a456-426614174000';
+            images.set(id, { mime_type: mimeType, image_data: imageData });
+            return id;
+        }),
+        getImage: jest.fn(async id => images.get(id) || null)
+    };
 }
 
-function readDataFile() {
-    return JSON.parse(fs.readFileSync(dataFile, 'utf8'));
+async function login() {
+    return request(server.app).post('/api/admin/login').send({ password: PASSWORD });
 }
 
 beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'icc-agenda-'));
-    dataFile = path.join(tmpDir, 'nested', 'agenda.json');
-    server = loadServer();
+    createDatabase();
+    loadServer();
 });
 
 afterEach(() => {
-    fs.rmSync(tmpDir, { recursive: true, force: true });
-    delete process.env.DATA_FILE;
     delete process.env.AGENDA_ADMIN_PASSWORD;
-});
-
-describe('ensureDataFile', () => {
-    test('creates the data file with default events when missing', () => {
-        expect(fs.existsSync(dataFile)).toBe(false);
-
-        server.ensureDataFile();
-
-        expect(fs.existsSync(dataFile)).toBe(true);
-        expect(readDataFile().events).toHaveLength(server.defaultEvents.length);
-    });
-
-    test('keeps an existing valid data file untouched', () => {
-        fs.mkdirSync(path.dirname(dataFile), { recursive: true });
-        writeDataFile({ events: [{ id: 'a', title: 'Culto', date: '2026-01-01T10:00:00', place: 'Sede' }] });
-
-        server.ensureDataFile();
-
-        expect(readDataFile().events).toEqual([
-            { id: 'a', title: 'Culto', date: '2026-01-01T10:00:00', place: 'Sede' }
-        ]);
-    });
-
-    test('restores defaults when the file has no events array', () => {
-        fs.mkdirSync(path.dirname(dataFile), { recursive: true });
-        writeDataFile({ events: 'nope' });
-
-        server.ensureDataFile();
-
-        expect(readDataFile().events).toHaveLength(server.defaultEvents.length);
-    });
-
-    test('restores defaults when the file is not valid JSON', () => {
-        fs.mkdirSync(path.dirname(dataFile), { recursive: true });
-        writeDataFile('{ not json');
-
-        server.ensureDataFile();
-
-        expect(readDataFile().events).toHaveLength(server.defaultEvents.length);
-    });
-});
-
-describe('readEvents', () => {
-    test('drops incomplete events and stringifies the remaining fields', () => {
-        fs.mkdirSync(path.dirname(dataFile), { recursive: true });
-        writeDataFile({
-            events: [
-                { id: 'ok', title: 'Culto', date: '2026-01-01T10:00:00', place: 'Sede' },
-                { title: 'Sin fecha', place: 'Sede' },
-                { title: 'Sin lugar', date: '2026-01-02T10:00:00' },
-                null,
-                { id: 5, title: 7, date: '2026-01-03T10:00:00', place: 9 }
-            ]
-        });
-
-        const events = server.readEvents();
-
-        expect(events).toHaveLength(3);
-        expect(events[0]).toEqual({
-            id: 'ok', title: 'Culto', date: '2026-01-01T10:00:00', place: 'Sede',
-            time: '', description: '', image: '', theme: '', posterLabel: ''
-        });
-        expect(events[1]).toEqual({
-            id: expect.any(String), title: 'Sin lugar', date: '2026-01-02T10:00:00', place: '',
-            time: '', description: '', image: '', theme: '', posterLabel: ''
-        });
-        expect(events[2]).toEqual({
-            id: 5, title: '7', date: '2026-01-03T10:00:00', place: '9',
-            time: '', description: '', image: '', theme: '', posterLabel: ''
-        });
-    });
-
-    test('generates an id for events that do not have one', () => {
-        fs.mkdirSync(path.dirname(dataFile), { recursive: true });
-        writeDataFile({ events: [{ title: 'Culto', date: '2026-01-01T10:00:00', place: 'Sede' }] });
-
-        const [event] = server.readEvents();
-
-        expect(typeof event.id).toBe('string');
-        expect(event.id).not.toHaveLength(0);
-    });
-
-    test('creates the data file when it does not exist yet', () => {
-        const events = server.readEvents();
-
-        expect(fs.existsSync(dataFile)).toBe(true);
-        expect(events).toHaveLength(server.defaultEvents.length);
-    });
-});
-
-describe('writeEvents', () => {
-    test('persists the events wrapped in an events property', () => {
-        fs.mkdirSync(path.dirname(dataFile), { recursive: true });
-        const events = [{ id: 'a', title: 'Culto', date: '2026-01-01T10:00:00', place: 'Sede' }];
-
-        server.writeEvents(events);
-
-        expect(readDataFile()).toEqual({ events });
-    });
-});
-
-describe('sortEvents', () => {
-    test('sorts by ascending date without mutating the input', () => {
-        const events = [
-            { id: 'b', date: '2026-03-01T10:00:00' },
-            { id: 'a', date: '2026-01-01T10:00:00' },
-            { id: 'c', date: '2026-02-01T10:00:00' }
-        ];
-
-        const sorted = server.sortEvents(events);
-
-        expect(sorted.map(e => e.id)).toEqual(['a', 'c', 'b']);
-        expect(events.map(e => e.id)).toEqual(['b', 'a', 'c']);
-    });
-});
-
-describe('isAuthorized', () => {
-    test.each([
-        [PASSWORD, true],
-        [`  ${PASSWORD}  `, true],
-        ['otra', false],
-        ['', false],
-        [undefined, false],
-        [null, false],
-        [123, false]
-    ])('isAuthorized(%p) === %p', (password, expected) => {
-        expect(server.isAuthorized(password)).toBe(expected);
-    });
+    delete process.env.ADMIN_SESSION_SECRET;
+    jest.resetModules();
 });
 
 describe('GET /api/agenda/events', () => {
-    test('returns the stored events sorted by date', async () => {
-        fs.mkdirSync(path.dirname(dataFile), { recursive: true });
-        writeDataFile({
-            events: [
-                { id: 'b', title: 'Segundo', date: '2026-03-01T10:00:00', place: 'Sede' },
-                { id: 'a', title: 'Primero', date: '2026-01-01T10:00:00', place: 'Sede' }
-            ]
-        });
+    test('returns events from the database', async () => {
+        const response = await request(server.app).get('/api/agenda/events');
 
-        const res = await request(server.app).get('/api/agenda/events');
-
-        expect(res.status).toBe(200);
-        expect(res.body.events.map(e => e.id)).toEqual(['a', 'b']);
+        expect(response.status).toBe(200);
+        expect(response.body.events).toEqual(events);
+        expect(database.getEvents).toHaveBeenCalledTimes(1);
     });
 });
 
-describe('POST /api/agenda/verify', () => {
-    test('accepts the configured password', async () => {
-        const res = await request(server.app).post('/api/agenda/verify').send({ password: PASSWORD });
+describe('administrative session', () => {
+    test('starts a signed HttpOnly session with the configured password', async () => {
+        const response = await login();
 
-        expect(res.status).toBe(200);
-        expect(res.body).toEqual({ ok: true });
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({ ok: true });
+        expect(response.headers['set-cookie'][0]).toContain('HttpOnly');
+        expect(response.headers['set-cookie'][0]).toContain('SameSite=Strict');
     });
 
-    test('rejects a wrong password', async () => {
-        const res = await request(server.app).post('/api/agenda/verify').send({ password: 'mala' });
+    test('rejects an incorrect password', async () => {
+        const response = await request(server.app)
+            .post('/api/admin/login')
+            .send({ password: 'incorrecta' });
 
-        expect(res.status).toBe(401);
-        expect(res.body).toEqual({ ok: false });
+        expect(response.status).toBe(401);
     });
 
-    test('rejects a request without a body', async () => {
-        const res = await request(server.app).post('/api/agenda/verify');
+    test('rejects an unauthenticated write', async () => {
+        const response = await request(server.app)
+            .put('/api/agenda/events/event-1')
+            .send({ title: 'Nuevo', date: '2026-01-02', time: '', description: '' });
 
-        expect(res.status).toBe(401);
-    });
-});
-
-describe('POST /api/agenda/update-dates', () => {
-    beforeEach(() => {
-        fs.mkdirSync(path.dirname(dataFile), { recursive: true });
-        writeDataFile({
-            events: [
-                { id: 'a', title: 'Primero', date: '2026-01-01T10:00:00', place: 'Sede' },
-                { id: 'b', title: 'Segundo', date: '2026-03-01T10:00:00', place: 'Capilla' }
-            ]
-        });
-    });
-
-    test('updates only the dates of the given events and keeps them sorted', async () => {
-        const res = await request(server.app)
-            .post('/api/agenda/update-dates')
-            .send({ password: PASSWORD, dates: [{ id: 'a', date: '2026-04-01T10:00:00' }] });
-
-        expect(res.status).toBe(200);
-        expect(res.body.ok).toBe(true);
-        expect(res.body.events).toEqual([
-            { id: 'b', title: 'Segundo', date: '2026-03-01T10:00:00', place: 'Capilla', time: '', description: '', image: '', theme: '', posterLabel: '' },
-            { id: 'a', title: 'Primero', date: '2026-04-01T10:00:00', place: 'Sede', time: '', description: '', image: '', theme: '', posterLabel: '' }
-        ]);
-        expect(readDataFile().events.find(e => e.id === 'a').date).toBe('2026-04-01T10:00:00');
-    });
-
-    test('ignores ids that do not exist', async () => {
-        const res = await request(server.app)
-            .post('/api/agenda/update-dates')
-            .send({ password: PASSWORD, dates: [{ id: 'zzz', date: '2026-04-01T10:00:00' }] });
-
-        expect(res.status).toBe(200);
-        expect(res.body.events.map(e => e.date)).toEqual(['2026-01-01T10:00:00', '2026-03-01T10:00:00']);
-    });
-
-    test('rejects an unauthorized request without touching the data file', async () => {
-        const res = await request(server.app)
-            .post('/api/agenda/update-dates')
-            .send({ password: 'mala', dates: [{ id: 'a', date: '2026-04-01T10:00:00' }] });
-
-        expect(res.status).toBe(401);
-        expect(res.body).toEqual({ error: 'No autorizado' });
-        expect(readDataFile().events.find(e => e.id === 'a').date).toBe('2026-01-01T10:00:00');
-    });
-
-    test.each([
-        ['missing dates', { password: PASSWORD }],
-        ['empty dates', { password: PASSWORD, dates: [] }],
-        ['dates not an array', { password: PASSWORD, dates: { id: 'a' } }]
-    ])('returns 400 when %s', async (_label, body) => {
-        const res = await request(server.app).post('/api/agenda/update-dates').send(body);
-
-        expect(res.status).toBe(400);
-        expect(res.body).toEqual({ error: 'Datos incompletos' });
+        expect(response.status).toBe(401);
+        expect(database.updateEvent).not.toHaveBeenCalled();
     });
 });
 
 describe('PUT /api/agenda/events/:id', () => {
-    beforeEach(() => {
-        fs.mkdirSync(path.dirname(dataFile), { recursive: true });
-        writeDataFile({
-            events: [{
-                id: 'event-1', title: 'Encuentro', date: '2026-10-11', time: '18:00',
-                place: 'Sede', description: 'Descripción anterior', image: '', theme: 'leaders'
-            }]
+    test('persists valid event edits after logging in', async () => {
+        const agent = request.agent(server.app);
+        const loginResponse = await agent.post('/api/admin/login').send({ password: PASSWORD });
+        expect(loginResponse.status).toBe(200);
+
+        const response = await agent.put('/api/agenda/events/event-1').send({
+            title: 'Culto actualizado',
+            date: '2026-02-02',
+            time: '10:00 a. m.',
+            description: 'Nueva información'
         });
+
+        expect(response.status).toBe(200);
+        expect(response.body.event.title).toBe('Culto actualizado');
+        expect(database.updateEvent).toHaveBeenCalledWith('event-1', expect.objectContaining({
+            title: 'Culto actualizado',
+            date: '2026-02-02',
+            image: undefined
+        }));
     });
 
-    test('updates event content and image with the configured password', async () => {
-        const changes = {
-            password: PASSWORD,
-            title: 'Nuevo encuentro',
-            date: '2026-10-12',
-            time: '7:30 p. m. - 9:00 p. m.',
-            description: 'Una nueva descripción.',
-            image: 'data:image/png;base64,aGVsbG8='
-        };
+    test('rejects invalid date values', async () => {
+        const agent = request.agent(server.app);
+        await agent.post('/api/admin/login').send({ password: PASSWORD });
 
-        const res = await request(server.app).put('/api/agenda/events/event-1').send(changes);
-
-        expect(res.status).toBe(200);
-        expect(res.body.event).toEqual({
-            id: 'event-1', title: 'Nuevo encuentro', date: '2026-10-12', time: '7:30 p. m. - 9:00 p. m.',
-            place: 'Sede', description: 'Una nueva descripción.', image: changes.image, theme: 'leaders', posterLabel: ''
+        const response = await agent.put('/api/agenda/events/event-1').send({
+            title: 'Culto',
+            date: '2026-02-30',
+            time: '',
+            description: ''
         });
-        expect(readDataFile().events[0]).toMatchObject({ title: 'Nuevo encuentro', image: changes.image });
-    });
 
-    test('rejects unauthorized updates without changing the event', async () => {
-        const res = await request(server.app)
-            .put('/api/agenda/events/event-1')
-            .send({ password: 'incorrecta', title: 'Cambio', date: '2026-10-12', time: '', description: '' });
-
-        expect(res.status).toBe(401);
-        expect(readDataFile().events[0].title).toBe('Encuentro');
-    });
-
-    test('rejects invalid dates and image formats', async () => {
-        const res = await request(server.app)
-            .put('/api/agenda/events/event-1')
-            .send({
-                password: PASSWORD,
-                title: 'Cambio',
-                date: '2026-02-31',
-                time: '25:00',
-                description: '',
-                image: 'data:image/svg+xml;base64,PHN2Zz4='
-            });
-
-        expect(res.status).toBe(400);
-        expect(readDataFile().events[0].title).toBe('Encuentro');
-    });
-
-    test('returns 404 for an unknown event', async () => {
-        const res = await request(server.app)
-            .put('/api/agenda/events/missing')
-            .send({ password: PASSWORD, title: 'Cambio', date: '2026-10-12', time: '', description: '' });
-
-        expect(res.status).toBe(404);
+        expect(response.status).toBe(400);
+        expect(database.updateEvent).not.toHaveBeenCalled();
     });
 });
 
-describe('static and fallback routes', () => {
-    test('serves index.html for unknown routes', async () => {
-        const res = await request(server.app).get('/ruta/inexistente');
+describe('page content API', () => {
+    test('returns saved content and its revision for an editable page', async () => {
+        const response = await request(server.app).get('/api/pages/predicas');
 
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('<html');
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({ contentHtml: '<section>Contenido</section>', revision: 1 });
+    });
+
+    test('does not expose pages outside the editable allowlist', async () => {
+        const response = await request(server.app).get('/api/pages/index');
+
+        expect(response.status).toBe(404);
+        expect(database.getPage).not.toHaveBeenCalled();
+    });
+
+    test('saves page changes only when the revision still matches', async () => {
+        const agent = request.agent(server.app);
+        await agent.post('/api/admin/login').send({ password: PASSWORD });
+
+        const response = await agent.put('/api/pages/predicas').send({
+            contentHtml: '<section>Actualizado</section>',
+            expectedRevision: 1
+        });
+        const conflict = await agent.put('/api/pages/predicas').send({
+            contentHtml: '<section>Antiguo</section>',
+            expectedRevision: 1
+        });
+
+        expect(response.status).toBe(200);
+        expect(response.body.revision).toBe(2);
+        expect(conflict.status).toBe(409);
+        expect(pages.get('predicas').contentHtml).toBe('<section>Actualizado</section>');
+    });
+});
+
+describe('database image API', () => {
+    test('stores uploaded image bytes and serves them by id', async () => {
+        const agent = request.agent(server.app);
+        await agent.post('/api/admin/login').send({ password: PASSWORD });
+
+        const upload = await agent.post('/api/admin/images')
+            .send({ dataUrl: 'data:image/png;base64,aGVsbG8=' });
+        const image = await request(server.app).get(upload.body.path);
+
+        expect(upload.status).toBe(201);
+        expect(upload.body.path).toBe('/api/images/123e4567-e89b-12d3-a456-426614174000');
+        expect(image.status).toBe(200);
+        expect(image.headers['content-type']).toContain('image/png');
+        expect(image.body).toEqual(Buffer.from('hello'));
+    });
+
+    test('rejects unsupported image data', async () => {
+        const agent = request.agent(server.app);
+        await agent.post('/api/admin/login').send({ password: PASSWORD });
+
+        const response = await agent.post('/api/admin/images')
+            .send({ dataUrl: 'data:image/svg+xml;base64,PHN2Zz4=' });
+
+        expect(response.status).toBe(400);
+        expect(database.saveImage).not.toHaveBeenCalled();
+    });
+});
+
+describe('validation helpers', () => {
+    test.each([
+        ['2026-01-01', true],
+        ['2026-02-30', false],
+        ['01-01-2026', false]
+    ])('validDate(%s) is %s', (date, expected) => {
+        expect(server.validDate(date)).toBe(expected);
+    });
+
+    test.each([
+        ['media/evento.png', true],
+        ['/api/images/123e4567-e89b-12d3-a456-426614174000', true],
+        ['../secreto', false],
+        ['javascript:alert(1)', false]
+    ])('validImagePath(%s) is %s', (image, expected) => {
+        expect(server.validImagePath(image)).toBe(expected);
     });
 });

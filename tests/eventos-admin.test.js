@@ -2,8 +2,6 @@
  * @jest-environment jsdom
  */
 
-const fs = require('fs');
-const path = require('path');
 const SCRIPT_PATH = require.resolve('../eventos-admin.js');
 
 const ADMIN_MARKUP = `
@@ -13,7 +11,6 @@ const ADMIN_MARKUP = `
         <button id="closeEventAdmin"></button>
         <form id="eventAdminLogin">
             <input id="eventAdminPassword" />
-            <input id="eventAdminGitHubToken" />
             <button type="submit">Ingresar</button>
         </form>
         <div id="eventAdminAuthenticated" hidden>
@@ -77,13 +74,16 @@ beforeEach(() => {
     window.history.replaceState({}, '', '/ICCTRINIDAD/eventos.html');
     global.fetch = jest.fn().mockResolvedValue({
         ok: true,
-        text: async () => JSON.stringify({ events: [makeEvent()] })
+        json: async () => ({ events: [makeEvent()] })
     });
-    window.GitHubContent = {
-        authenticate: jest.fn().mockResolvedValue('admin-icc'),
-        readFile: jest.fn().mockResolvedValue({ content: JSON.stringify({ events: [makeEvent()] }), sha: 'sha-1' }),
-        saveFile: jest.fn().mockResolvedValue({ commit: { sha: 'commit-1' } }),
-        clearSession: jest.fn()
+    window.DatabaseAdmin = {
+        login: jest.fn().mockResolvedValue({ ok: true }),
+        logout: jest.fn().mockResolvedValue({ ok: true }),
+        saveImage: jest.fn().mockResolvedValue({ path: '/api/images/123e4567-e89b-12d3-a456-426614174000' }),
+        request: jest.fn().mockImplementation(async (url, options) => ({
+            ok: true,
+            event: { ...makeEvent(), ...JSON.parse(options.body) }
+        }))
     };
 });
 
@@ -91,31 +91,31 @@ afterEach(() => {
     document.body.innerHTML = '';
     delete URL.createObjectURL;
     delete URL.revokeObjectURL;
+    delete window.DatabaseAdmin;
     jest.restoreAllMocks();
 });
 
-describe('administración de eventos en GitHub Pages', () => {
-    test('mantiene visible el acceso y carga la agenda estática', async () => {
+describe('administración de eventos con MySQL', () => {
+    test('carga eventos desde la API y mantiene visible el acceso', async () => {
         loadAdminScript();
         await flushPromises();
 
+        expect(global.fetch).toHaveBeenCalledWith('/api/agenda/events');
         expect(document.querySelector('#eventsGrid').textContent).toContain('Encuentro familiar');
         expect(document.querySelector('#openEventAdmin').hidden).toBe(false);
     });
 
-    test('acepta la clave y guarda los cambios en GitHub', async () => {
+    test('inicia sesión y guarda los cambios mediante la API', async () => {
         loadAdminScript();
         await flushPromises();
 
         document.querySelector('#openEventAdmin').click();
-        const passwordInput = document.querySelector('#eventAdminPassword');
-        passwordInput.value = 'TRINIDAD2026';
-        document.querySelector('#eventAdminGitHubToken').value = 'ghp_test_token';
+        document.querySelector('#eventAdminPassword').value = 'clave-de-prueba';
         document.querySelector('#eventAdminLogin').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
         await flushPromises();
 
         expect(document.querySelector('#eventAdminAuthenticated').hidden).toBe(false);
-        expect(window.GitHubContent.authenticate).toHaveBeenCalledWith('ghp_test_token');
+        expect(window.DatabaseAdmin.login).toHaveBeenCalledWith('clave-de-prueba');
         expect(document.querySelector('[data-edit-event="event-1"]')).not.toBeNull();
 
         document.querySelector('[data-edit-event="event-1"]').click();
@@ -125,17 +125,19 @@ describe('administración de eventos en GitHub Pages', () => {
         document.querySelector('#eventEditorForm').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
         await flushPromises();
 
-        expect(window.GitHubContent.saveFile).toHaveBeenCalledWith(
-            'agenda.json',
-            expect.stringContaining('Encuentro actualizado'),
-            'Actualiza evento: Encuentro actualizado',
-            JSON.stringify({ events: [makeEvent()] })
+        expect(window.DatabaseAdmin.request).toHaveBeenCalledWith(
+            '/api/agenda/events/event-1',
+            expect.objectContaining({
+                method: 'PUT',
+                body: expect.stringContaining('Encuentro actualizado')
+            })
         );
-        expect(document.querySelector('#eventAdminStatus').textContent).toContain('Cambios guardados en GitHub');
+        expect(document.querySelector('#eventAdminStatus').textContent).toContain('guardados en la base de datos');
         expect(document.querySelector('#eventsGrid').textContent).toContain('Encuentro actualizado');
     });
 
-    test('rechaza una clave incorrecta sin ocultar el botón de acceso', async () => {
+    test('muestra errores de autenticación sin ocultar el acceso', async () => {
+        window.DatabaseAdmin.login.mockRejectedValue(new Error('La clave no es correcta.'));
         loadAdminScript();
         await flushPromises();
 

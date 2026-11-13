@@ -149,10 +149,8 @@
                     <h4>Acceso de administración</h4>
                     <label for="eventAdminPassword">Clave de administración</label>
                     <input id="eventAdminPassword" type="password" autocomplete="current-password" required />
-                    <label for="eventAdminGitHubToken">Token de GitHub</label>
-                    <input id="eventAdminGitHubToken" type="password" autocomplete="off" required />
-                    <span class="event-editor-hint">Token fine-grained con acceso al repositorio y Contents: Read and write. <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Crear token</a>. Solo queda en memoria mientras esta página está abierta.</span>
-                    <button class="event-admin-trigger" type="submit">Conectar y editar</button>
+                    <p class="event-editor-hint">Los cambios se guardan en la base de datos del sitio.</p>
+                    <button class="event-admin-trigger" type="submit">Iniciar sesión</button>
                 </form>
                 <div id="eventAdminAuthenticated" hidden>
                     <p id="eventAdminStatus" role="status">Modo de edición activado.</p>
@@ -163,7 +161,7 @@
         </div>
     </footer>
     <script src="scripts.js"></script>
-    <script src="github-content-api.js"></script>
+    <script src="database-admin.js"></script>
     <script src="eventos-admin.js"></script>
 </body>
 

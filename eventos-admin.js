@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const staticAdminPassword = 'TRINIDAD2026';
     const eventsGrid = document.getElementById('eventsGrid');
     const openAdminButton = document.getElementById('openEventAdmin');
     const adminPanel = document.getElementById('eventAdminPanel');
     const closeAdminButton = document.getElementById('closeEventAdmin');
     const adminLogin = document.getElementById('eventAdminLogin');
     const adminPasswordInput = document.getElementById('eventAdminPassword');
-    const githubTokenInput = document.getElementById('eventAdminGitHubToken');
     const adminAuthenticated = document.getElementById('eventAdminAuthenticated');
     const adminStatus = document.getElementById('eventAdminStatus');
     const adminError = document.getElementById('eventAdminError');
@@ -28,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const allowedThemes = new Set(['kids', 'seminar', 'leaders', 'volunteers', 'baby', 'luminacion']);
     let events = [];
-    let agendaFileContent = '';
     let adminPassword = '';
     let editingEventId = '';
     let newImageData = '';
@@ -144,16 +141,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadEvents() {
-        try {
-            const response = await fetch('agenda.json');
-            if (!response.ok) throw new Error('No fue posible cargar la agenda.');
-            agendaFileContent = await response.text();
-            const data = JSON.parse(agendaFileContent);
-            events = Array.isArray(data.events) ? data.events : [];
-            renderEvents();
-        } catch (error) {
-            eventsGrid.innerHTML = '<p class="event-admin-error">No se pudieron cargar los eventos. Revisa la conexión e inténtalo de nuevo.</p>';
-        }
+        const response = await fetch('/api/agenda/events');
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'No fue posible cargar la agenda.');
+        events = Array.isArray(data.events) ? data.events : [];
+        renderEvents();
     }
 
     openAdminButton.addEventListener('click', () => {
@@ -179,30 +171,27 @@ document.addEventListener('DOMContentLoaded', () => {
         setAdminError('');
         const password = adminPasswordInput.value;
         try {
-            if (password !== staticAdminPassword) {
-                throw new Error('La clave no es correcta.');
-            }
-
-            const githubUser = await window.GitHubContent.authenticate(githubTokenInput.value);
-            const remoteAgenda = await window.GitHubContent.readFile('agenda.json');
-            agendaFileContent = remoteAgenda.content;
-            const data = JSON.parse(agendaFileContent);
-            events = Array.isArray(data.events) ? data.events : [];
+            await window.DatabaseAdmin.login(password);
+            await loadEvents();
             adminPassword = password;
             adminPasswordInput.value = '';
-            githubTokenInput.value = '';
             adminLogin.hidden = true;
             adminAuthenticated.hidden = false;
-            adminStatus.textContent = `Conectado como ${githubUser}. Los cambios se guardarán en GitHub.`;
+            adminStatus.textContent = 'Sesión iniciada. Los cambios se guardarán en la base de datos.';
             renderEvents();
         } catch (error) {
-            setAdminError(error.message || 'No se pudo validar la clave.');
+            setAdminError(error.message || 'No se pudo iniciar sesión.');
         }
     });
 
-    logoutButton.addEventListener('click', () => {
+    logoutButton.addEventListener('click', async () => {
+        try {
+            await window.DatabaseAdmin.logout();
+        } catch (error) {
+            setAdminError(error.message || 'No se pudo cerrar la sesión.');
+            return;
+        }
         adminPassword = '';
-        window.GitHubContent.clearSession();
         adminLogin.hidden = false;
         adminAuthenticated.hidden = true;
         adminPanel.hidden = true;
@@ -264,24 +253,18 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const eventIndex = events.findIndex(item => String(item.id) === editingEventId);
             if (eventIndex === -1) throw new Error('No se encontró el evento que intentas editar.');
-            const updatedEvents = [...events];
             if (changes.image && changes.image.startsWith('data:image/')) {
-                const imageName = editorImage.files[0] ? editorImage.files[0].name : 'evento';
-                changes.image = await window.GitHubContent.saveImage(changes.image, imageName);
+                const imageResult = await window.DatabaseAdmin.saveImage(changes.image);
+                changes.image = imageResult.path;
             }
-            updatedEvents[eventIndex] = { ...updatedEvents[eventIndex], ...changes };
-            const nextAgendaContent = JSON.stringify({ events: updatedEvents }, null, 2);
-            await window.GitHubContent.saveFile(
-                'agenda.json',
-                nextAgendaContent,
-                `Actualiza evento: ${changes.title}`,
-                agendaFileContent
+            const result = await window.DatabaseAdmin.request(
+                `/api/agenda/events/${encodeURIComponent(editingEventId)}`,
+                { method: 'PUT', body: JSON.stringify(changes) }
             );
-            agendaFileContent = nextAgendaContent;
-            events = updatedEvents;
+            events[eventIndex] = result.event;
             renderEvents();
             closeEditor();
-            adminStatus.textContent = 'Cambios guardados en GitHub. Pages puede tardar unos minutos en mostrarlos.';
+            adminStatus.textContent = 'Cambios guardados en la base de datos.';
         } catch (error) {
             setEditorError(error.message || 'No se pudo guardar el evento.');
         } finally {
@@ -297,5 +280,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.key === 'Escape' && !editorOverlay.hidden) closeEditor();
     });
 
-    loadEvents();
+    loadEvents().catch(error => {
+        console.error('No se pudo cargar la agenda:', error);
+        eventsGrid.innerHTML = '<p class="event-admin-error">No se pudieron cargar los eventos. Revisa la conexión e inténtalo de nuevo.</p>';
+    });
 });

@@ -1,41 +1,64 @@
 # ICC La Trinidad
 
-Sitio estático publicado con GitHub Pages. Eventos, Prédicas, Liderazgo, Grupos y Testimonios permiten editar su contenido desde la misma página y guardar cambios como commits en GitHub.
+Sitio web servido con Node.js/Express y MySQL. Los cambios administrativos de Eventos, Prédicas, Liderazgo, Grupos y Testimonios se guardan en la base de datos. Las imágenes agregadas desde los editores también se guardan en MySQL.
+
+## Hosting recomendado
+
+Para GoDaddy, utiliza un **VPS** con Node.js y MySQL. El sitio necesita ejecutar `server.js`; no publiques estos archivos como un sitio estático ni uses GitHub Pages como servidor de producción. Configura HTTPS antes de habilitar la administración.
 
 ## Requisitos
 
 - Node.js 18+
+- MySQL 8+ (o una versión MySQL compatible)
 
-## Instalación
+## Configuración
 
-```bash
-npm.cmd install
-```
+1. Crea una base de datos MySQL y un usuario con permisos sobre esa base.
+2. Instala dependencias:
 
-## Ejecutar
+   ```bash
+   npm install
+   ```
 
-```bash
+3. Configura estas variables de entorno en el VPS:
+
+   - `DB_HOST`: servidor MySQL.
+   - `DB_PORT`: puerto MySQL (normalmente `3306`).
+   - `DB_NAME`: nombre de la base de datos.
+   - `DB_USER`: usuario de la base de datos.
+   - `DB_PASSWORD`: contraseña de la base de datos.
+   - `AGENDA_ADMIN_PASSWORD`: clave fuerte para el panel de administración.
+   - `ADMIN_SESSION_SECRET`: secreto aleatorio largo para firmar las sesiones.
+   - `NODE_ENV`: `production`.
+   - `PORT`: puerto asignado al servidor, si GoDaddy no usa `3000`.
+
+   No guardes estas credenciales en el repositorio ni las compartas en el navegador.
+
+4. Inicia el sitio:
+
+   ```bash
+   npm start
+   ```
+
+En el primer inicio se crean las tablas `agenda_events`, `editable_pages` y `admin_images`. Los eventos iniciales se importan de `agenda.json`; las cuatro páginas editables se inicializan desde sus archivos HTML. Después de esa primera carga, MySQL es la fuente de verdad y las ediciones no modifican archivos ni crean commits en GitHub.
+
+## Administración
+
+En Eventos, Prédicas, Liderazgo, Grupos y Testimonios, abre **Administrar** en el pie de página e inicia sesión con `AGENDA_ADMIN_PASSWORD`. Las sesiones se guardan en una cookie `HttpOnly` y expiran después de ocho horas. Los cambios de eventos, contenido de páginas e imágenes se envían al servidor y se persisten en MySQL.
+
+## Desarrollo local
+
+Configura las variables de conexión MySQL y la clave de administración en la terminal antes de ejecutar:
+
+```powershell
+$env:DB_HOST = "127.0.0.1"
+$env:DB_PORT = "3306"
+$env:DB_NAME = "icc_la_trinidad"
+$env:DB_USER = "icc_admin"
+$env:DB_PASSWORD = "tu-clave-local"
+$env:AGENDA_ADMIN_PASSWORD = "clave-local-fuerte"
+$env:ADMIN_SESSION_SECRET = "secreto-local-largo-y-aleatorio"
 npm.cmd start
 ```
 
-Abre en navegador:
-
-- http://localhost:3000/conocenos.html
-
-## Editar desde GitHub Pages
-
-En Eventos, Prédicas, Liderazgo, Grupos y Testimonios, el acceso de administración está abajo a la izquierda del footer. Para conectarse, se requiere:
-
-1. La clave de administración: `TRINIDAD2026`.
-2. Crea un token fine-grained desde [GitHub Settings](https://github.com/settings/personal-access-tokens/new), selecciona solo `ICCTRINIDAD` y concede `Contents: Read and write` en Repository permissions.
-3. La cuenta debe tener permiso de escritura en el repositorio.
-
-El token se ingresa en el navegador y se conserva solo en memoria mientras la página está abierta; no se guarda en el repositorio ni en el almacenamiento del navegador. No lo compartas por chat ni lo agregues al código.
-
-Al editar una página, los cambios se guardan directamente como un commit en `main`. Eventos actualiza `agenda.json`; las otras páginas guardan su archivo HTML. GitHub Pages puede tardar unos minutos en publicar cada commit.
-
-La clave de administración es solo una barrera visual del panel estático. La autorización efectiva para escribir la controla el token de GitHub y los permisos de la cuenta.
-
-## Publicación
-
-GitHub Pages se sirve desde la rama `main` y la raíz del repositorio. Los cambios guardados desde los editores se publican automáticamente; también se puede actualizar el sitio con un `git push`.
+La aplicación inicia con `npm start`; las pruebas se ejecutan con `npm test`.
